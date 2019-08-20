@@ -1,4 +1,4 @@
-package com.davidmag.movienatic.rest
+package com.davidmag.movienatic.util
 
 import kotlinx.coroutines.*
 import retrofit2.Call
@@ -6,15 +6,15 @@ import retrofit2.HttpException
 import retrofit2.Response
 
 object ApiUtils {
-    fun <T, Q> doRequest(call : Call<T>, handleResults : (Response<T>?, Exception?) -> Q?) : CompletableDeferred<Q?> {
-        val completableDeferred = CompletableDeferred<Q?>()
+    fun <T, Q> doRequest(call : Call<T>, onSuccess: (Response<T>) -> Q) : Deferred<Q> {
+        val deferred = CompletableDeferred<Q>()
 
         GlobalScope.launch {
             try{
                 val response = call.execute()
 
                 if(response.isSuccessful){
-                    completableDeferred.complete(handleResults(response, null))
+                    deferred.complete(onSuccess(response))
                 }
                 else{
                     throw HttpException(response)
@@ -22,11 +22,12 @@ object ApiUtils {
             }
             catch(e : Exception){
                 e.printStackTrace()
-                completableDeferred.completeExceptionally(e)
-                handleResults(null, e)
+                launch(Dispatchers.Main) {
+                    deferred.completeExceptionally(e)
+                }
             }
         }
 
-        return completableDeferred
+        return deferred
     }
 }

@@ -1,7 +1,6 @@
 package com.davidmag.movienatic.util
 
 import com.davidmag.movienatic.App
-import com.davidmag.movienatic.App.Companion.getApp
 import com.davidmag.movienatic.R
 import java.text.SimpleDateFormat
 import java.util.*
@@ -12,7 +11,7 @@ object DateUtils {
 
     init {
         App.currentLocale.observeForever{
-            dateWordsFormatter = SimpleDateFormat(getApp().getString(R.string.format_date_words), it)
+            dateWordsFormatter = SimpleDateFormat(App.instance.getString(R.string.format_date_words), it)
         }
     }
 

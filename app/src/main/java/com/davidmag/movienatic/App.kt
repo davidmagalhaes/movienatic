@@ -28,21 +28,16 @@ import android.content.res.AssetManager
 class App : Application() {
 
     companion object  {
-        private lateinit var retrofit : Retrofit
-        private lateinit var singleton : App
+        lateinit var retrofit : Retrofit
+            private set
+        lateinit var instance : App
+            private set
 
         val currentLocale = MutableLiveData<Locale>()
-
-        fun retrofit() : Retrofit {
-            return retrofit
-        }
-        fun getApp() : App {
-            return singleton
-        }
     }
 
     init {
-        singleton = this
+        instance = this
     }
 
     override fun onCreate() {

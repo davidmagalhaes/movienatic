@@ -33,14 +33,14 @@ class MovieListActivity : BaseActivity(), MovieClickListener {
         initRecyclerView()
         subscribeObservers()
         viewModel.getUpcomingMovies().invokeOnCompletion {
-            it?.let { runOnUiThread {
+            it?.let {
                 val errorMsg = when(it){
                     is SocketTimeoutException -> getString(R.string.error_connection_timeout)
                     else -> getString(R.string.error_generic_explained, it.message)
                 }
 
                 Toast.makeText(this, errorMsg, Toast.LENGTH_LONG).show()
-            } }
+            }
         }
     }
 

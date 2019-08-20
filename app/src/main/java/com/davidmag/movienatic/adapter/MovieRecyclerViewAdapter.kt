@@ -30,12 +30,12 @@ class MovieRecyclerViewAdapter(private val movieClickListener: MovieClickListene
 
         movie.posterPath?.let {posterPath ->
             Realm.getDefaultInstance().use {realm ->
-                val imgcfg = realm.where(ImageConfigs::class.java).findFirst()
+                val imageConfigs = realm.where(ImageConfigs::class.java).findFirst()
 
-                imgcfg?.let {imageConfigs ->
+                imageConfigs?.let {
                     GlideApp.with(holder.itemView.context).
-                        load("${imageConfigs.secureBaseUrl}w300${posterPath}").
-                        diskCacheStrategy(DiskCacheStrategy.NONE).
+                        load("${it.secureBaseUrl}w300${posterPath}").
+                        diskCacheStrategy(DiskCacheStrategy.RESOURCE).
                         placeholder(R.drawable.ic_launcher_background).
                         into(holder.coverImg!!)
                 }
