@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Movienatic</string>
+    <string name="format_day_month">dd \'de\' MMMM</string>
+    <string name="format_date_words">dd \'de\' MMMM \'de\' yyyy</string>
+    <string name="error_connection_timeout">Não foi possível conectar ao servidor: Timeout</string>
+    <string name="error_generic_explained">Ocorreu um erro: %s</string>
 </resources>
