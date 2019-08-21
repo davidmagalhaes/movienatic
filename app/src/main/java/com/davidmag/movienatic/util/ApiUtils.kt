@@ -6,7 +6,7 @@ import retrofit2.HttpException
 import retrofit2.Response
 
 object ApiUtils {
-    fun <T, Q> doRequest(call : Call<T>, onSuccess: (Response<T>) -> Q) : Deferred<Q> {
+    fun <T, Q> doRequest(call : Call<T>, extractResult: ((Response<T>) -> Q)) : Deferred<Q> {
         val deferred = CompletableDeferred<Q>()
 
         GlobalScope.launch {
@@ -14,7 +14,7 @@ object ApiUtils {
                 val response = call.execute()
 
                 if(response.isSuccessful){
-                    deferred.complete(onSuccess(response))
+                    deferred.complete(extractResult(response))
                 }
                 else{
                     throw HttpException(response)

@@ -18,9 +18,7 @@ object MovieResourceClient {
         val call = movieResource.getUpcomingMovies(BuildConfig.API_KEY, page, language, region)
 
         return ApiUtils.doRequest(call){
-            val results = it.body()!!.results
-            movies.postValue(results)
-            results
+            it.body()!!.results
         }
     }
 
@@ -30,9 +28,7 @@ object MovieResourceClient {
         val call = movieResource.searchMovies(BuildConfig.API_KEY, query, includeAdult, year, primaryReleaseYear, page, language, region)
 
         return ApiUtils.doRequest(call){
-            val results = it.body()!!.results
-            movies.postValue(results)
-            results
+            it.body()!!.results
         }
     }
 }

@@ -12,8 +12,7 @@ open class ImageConfigs : RealmObject(), Serializable {
     var id : Int = 1
         private set
 
-    var lastSync : Date = Date()
-        private set
+    var lastUpdate : Date = Date()
 
     @SerializedName("base_url")
     var baseUrl : String? = null
