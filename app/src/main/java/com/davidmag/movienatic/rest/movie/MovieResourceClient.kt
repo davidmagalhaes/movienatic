@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import com.davidmag.movienatic.App
 import com.davidmag.movienatic.BuildConfig
 import com.davidmag.movienatic.model.Movie
-import com.davidmag.movienatic.util.ApiUtils
+import com.davidmag.movienatic.rest.ApiUtils
 import kotlinx.coroutines.Deferred
 
 object MovieResourceClient {

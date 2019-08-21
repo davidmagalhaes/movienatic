@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import com.davidmag.movienatic.App
 import com.davidmag.movienatic.BuildConfig
 import com.davidmag.movienatic.model.ImageConfigs
-import com.davidmag.movienatic.util.ApiUtils
+import com.davidmag.movienatic.rest.ApiUtils
 import io.realm.Realm
 import kotlinx.coroutines.Deferred
 
@@ -18,7 +18,7 @@ object ConfigurationsResourceClient {
     fun updateConfigurations() : Deferred<ConfigurationsResponse> {
         val call = configurationsResource.updateConfigurations(BuildConfig.API_KEY)
 
-        return ApiUtils.doRequest(call){response ->
+        return ApiUtils.doRequest(call){ response ->
             val body = response.body()!!
             val images = body.images
 
