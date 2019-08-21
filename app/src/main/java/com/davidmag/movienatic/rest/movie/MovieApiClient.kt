@@ -4,14 +4,14 @@ import androidx.lifecycle.MutableLiveData
 import com.davidmag.movienatic.App
 import com.davidmag.movienatic.BuildConfig
 import com.davidmag.movienatic.model.Movie
-import com.davidmag.movienatic.util.ApiUtils
+import com.davidmag.movienatic.rest.ApiUtils
 import kotlinx.coroutines.Deferred
 
-object MovieResourceClient {
+object MovieApiClient {
     val movies = MutableLiveData<List<Movie>>()
 
     private val movieResource by lazy {
-        App.retrofit.create(MovieResource::class.java)
+        App.retrofit.create(MovieApi::class.java)
     }
 
     fun getUpcomingMovies(page : Int? = null, language : String? = null, region : String? = null) : Deferred<List<Movie>> {

@@ -1,4 +1,4 @@
-package com.davidmag.movienatic.util
+package com.davidmag.movienatic.rest
 
 import kotlinx.coroutines.*
 import retrofit2.Call

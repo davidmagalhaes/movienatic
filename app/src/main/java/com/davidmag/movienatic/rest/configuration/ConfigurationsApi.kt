@@ -4,7 +4,7 @@ import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-interface ConfigurationsResource {
+interface ConfigurationsApi {
     @GET("configuration")
-    fun updateConfigurations(@Query("api_key")  apiKey : String): Call<ConfigurationsResponse>
+    fun updateConfigurations(@Query("api_key")  apiKey : String): Call<ConfigurationsApiResponse>
 }

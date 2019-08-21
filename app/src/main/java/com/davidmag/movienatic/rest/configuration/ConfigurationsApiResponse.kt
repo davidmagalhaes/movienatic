@@ -2,6 +2,6 @@ package com.davidmag.movienatic.rest.configuration
 
 import com.davidmag.movienatic.model.ImageConfigs
 
-data class ConfigurationsResponse(
+data class ConfigurationsApiResponse(
     var images : ImageConfigs
 )

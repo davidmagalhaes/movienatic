@@ -1,10 +1,9 @@
 package com.davidmag.movienatic
 
 import android.app.Application
-import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import com.bumptech.glide.integration.okhttp3.OkHttpUrlLoader
-import com.davidmag.movienatic.rest.configuration.ConfigurationsResourceClient
+import com.davidmag.movienatic.rest.configuration.ConfigurationsApiClient
 import com.davidmag.movienatic.util.Constants
 import com.facebook.stetho.Stetho
 import com.uphyca.stetho_realm.RealmInspectorModulesProvider
@@ -18,11 +17,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.*
 import java.util.concurrent.TimeUnit
-import android.R.attr.typeface
-import android.graphics.Typeface
-import android.content.res.AssetManager
-
-
 
 
 class App : Application() {
@@ -96,6 +90,6 @@ class App : Application() {
 
         super.onCreate()
 
-        ConfigurationsResourceClient.updateConfigurations()
+        ConfigurationsApiClient.updateConfigurations()
     }
 }
