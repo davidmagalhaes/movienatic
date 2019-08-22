@@ -25,36 +25,36 @@ class MovieListActivity : BaseActivity(), MovieClickListener {
         MovieRecyclerViewAdapter(this)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_movie_list)
-
-        initRecyclerView()
-        subscribeObservers()
-        viewModel.getUpcomingMovies().invokeOnCompletion {
-            it?.let {
-                val errorMsg = when(it){
-                    is SocketTimeoutException -> getString(R.string.error_connection_timeout)
-                    else -> getString(R.string.error_generic_explained, it.message)
-                }
-
-                Toast.makeText(this, errorMsg, Toast.LENGTH_LONG).show()
-            }
-        }
-    }
-
-    fun initRecyclerView(){
-        movie_list.adapter = mAdapter
-        movie_list.layoutManager = GridLayoutManager(this, 2)
-    }
-
-    fun subscribeObservers(){
-        viewModel.getMovies().observe(this, Observer { movies ->
-            movies?.let {
-                mAdapter.movieList = it
-            }
-        })
-    }
+//    override fun onCreate(savedInstanceState: Bundle?) {
+//        super.onCreate(savedInstanceState)
+//        setContentView(R.layout.activity_movie_list)
+//
+//        initRecyclerView()
+//        subscribeObservers()
+//        viewModel.getUpcomingMovies().invokeOnCompletion {
+//            it?.let {
+//                val errorMsg = when(it){
+//                    is SocketTimeoutException -> getString(R.string.error_connection_timeout)
+//                    else -> getString(R.string.error_generic_explained, it.message)
+//                }
+//
+//                Toast.makeText(this, errorMsg, Toast.LENGTH_LONG).show()
+//            }
+//        }
+//    }
+//
+//    fun initRecyclerView(){
+//        movie_list.adapter = mAdapter
+//        movie_list.layoutManager = GridLayoutManager(this, 2)
+//    }
+//
+//    fun subscribeObservers(){
+//        viewModel.getMovies().observe(this, Observer { movies ->
+//            movies?.let {
+//                mAdapter.movieList = it
+//            }
+//        })
+//    }
 
     override fun onMovieClick(v: View, pos: Int) {
 
