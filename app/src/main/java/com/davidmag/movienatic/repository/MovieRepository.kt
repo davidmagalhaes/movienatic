@@ -1,26 +1,30 @@
 package com.davidmag.movienatic.repository
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
+import com.davidmag.movienatic.App
+import com.davidmag.movienatic.BuildConfig
 import com.davidmag.movienatic.model.Movie
-import com.davidmag.movienatic.rest.movie.MovieResourceClient
+import com.davidmag.movienatic.rest.api.MovieApi
+import com.davidmag.movienatic.rest.response.LookupMoviesResponse
 import io.realm.Realm
-import kotlinx.coroutines.CompletableDeferred
-import kotlinx.coroutines.Deferred
-import java.lang.Exception
+import retrofit2.Call
 
 object MovieRepository {
-    val movies = MediatorLiveData<List<Movie>>()
-
-    init {
-        movies.addSource(MovieResourceClient.movies, movies::setValue)
+    val movieApi : MovieApi by lazy {
+        App.retrofit.create(MovieApi::class.java)
     }
 
-    fun getUpcomingMovies(page : Int? = null, language : String? = null, region : String? = null) : Deferred<List<Movie>> {
-        return MovieResourceClient.getUpcomingMovies(page, language, region)
-    }
-
-    fun getMovies() : LiveData<List<Movie>?> {
-        return MovieResourceClient.movies
+    fun getUpcomingMovies(page : Int? = null, language : String? = null, region : String? = null) : LiveData<Resource<List<Movie>>> {
+        return object : NetworkBoundRealmListResource<Movie, LookupMoviesResponse>(Movie::class.java){
+            override fun shouldFetch(item: List<Movie>): Boolean {
+                return true
+            }
+            override fun createCall(): Call<LookupMoviesResponse> {
+                return movieApi.getUpcomingMovies(BuildConfig.API_KEY, page, language, region)
+            }
+            override fun saveCallResult(item: LookupMoviesResponse, realmTransaction : Realm) {
+                realmTransaction.copyToRealmOrUpdate(item.results)
+            }
+        }.asLiveData()
     }
 }

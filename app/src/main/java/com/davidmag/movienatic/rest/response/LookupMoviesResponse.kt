@@ -1,4 +1,4 @@
-package com.davidmag.movienatic.rest.movie
+package com.davidmag.movienatic.rest.response
 
 import com.davidmag.movienatic.model.Movie
 import com.davidmag.movienatic.rest.Dates

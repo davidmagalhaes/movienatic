@@ -1,10 +1,11 @@
-package com.davidmag.movienatic.rest.movie
+package com.davidmag.movienatic.rest.api
 
+import com.davidmag.movienatic.rest.response.LookupMoviesResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-interface MovieResource {
+interface MovieApi {
     @GET("movie/upcoming")
     fun getUpcomingMovies(@Query("api_key")  apiKey : String,
                           @Query("page")     page : Int?,

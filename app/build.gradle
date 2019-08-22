@@ -85,6 +85,9 @@ dependencies {
     implementation "com.facebook.stetho:stetho-okhttp3:$stethoVer"
     implementation "com.uphyca:stetho_realm:2.3.0"
 
+    //RETROFUTURE
+    implementation 'net.sourceforge.streamsupport:android-retrofuture:1.7.1'
+
     //TEST
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'

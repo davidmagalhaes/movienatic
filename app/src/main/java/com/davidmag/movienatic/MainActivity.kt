@@ -3,7 +3,6 @@ package com.davidmag.movienatic
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
-import com.davidmag.movienatic.rest.movie.MovieResourceClient
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -13,7 +12,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         button.setOnClickListener {
-            MovieResourceClient.getUpcomingMovies().invokeOnCompletion { it?.let { runOnUiThread {
+            MovieApiClient.getUpcomingMovies().invokeOnCompletion { it?.let { runOnUiThread {
                 handleError(it)
             } } }
         }
