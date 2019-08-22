@@ -10,7 +10,7 @@ import io.realm.Realm
 import retrofit2.Call
 
 object ConfigurationsRepository {
-    val configurationsApi : ConfigurationsApi by lazy {
+    private val configurationsApi : ConfigurationsApi by lazy {
         App.retrofit.create(ConfigurationsApi::class.java)
     }
 

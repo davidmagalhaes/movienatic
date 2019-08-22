@@ -27,7 +27,7 @@ abstract class NetworkBoundRealmResource<CacheObject : RealmModel, RequestObject
         return liveData
     }
 
-    override fun saveCallResult(item: RequestObject) {
+    final override fun saveCallResult(item: RequestObject) {
         Realm.getDefaultInstance().use { realm ->
             realm.executeTransaction {
                 saveCallResult(item, it)

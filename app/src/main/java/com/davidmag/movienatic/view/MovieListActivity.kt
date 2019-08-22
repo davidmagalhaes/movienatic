@@ -21,7 +21,6 @@ class MovieListActivity : BaseActivity(), MovieClickListener {
     val viewModel by lazy {
         ViewModelProviders.of(this).get(MovieListViewModel::class.java)
     }
-
     val mAdapter by lazy {
         MovieRecyclerViewAdapter(this)
     }

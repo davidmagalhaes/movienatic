@@ -10,7 +10,7 @@ import io.realm.Realm
 import retrofit2.Call
 
 object MovieRepository {
-    val movieApi : MovieApi by lazy {
+    private val movieApi : MovieApi by lazy {
         App.retrofit.create(MovieApi::class.java)
     }
 

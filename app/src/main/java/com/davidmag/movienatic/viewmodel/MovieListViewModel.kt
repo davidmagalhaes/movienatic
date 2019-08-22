@@ -8,10 +8,12 @@ import com.davidmag.movienatic.repository.MovieRepository
 import kotlinx.coroutines.Deferred
 
 class MovieListViewModel : ViewModel() {
-
     val movies = MediatorLiveData<List<Movie>>()
 
     fun getMovies() : LiveData<List<Movie>?> {
+
+        MovieRepository.getUpcomingMovies()
+
         return MovieRepository.getUpcomingMovies()
     }
 

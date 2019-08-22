@@ -7,7 +7,11 @@ import java.util.*
 
 
 object DateUtils {
-    lateinit var dateWordsFormatter : SimpleDateFormat
+    private lateinit var dateWordsFormatter : SimpleDateFormat
+
+    private val isoDateFormatter by lazy {
+        SimpleDateFormat("yyyy-MM-ddTHH:mm:ss", App.currentLocale.value!!)
+    }
 
     init {
         App.currentLocale.observeForever{
@@ -17,5 +21,13 @@ object DateUtils {
 
     fun dateWordsFormat(date : Date) : String {
         return dateWordsFormatter.format(date)
+    }
+
+    fun toIsoString(date : Date?) : String?{
+        return date?.let { isoDateFormatter.format(it) }
+    }
+
+    fun fromIsoString(isoString : String?) : Date? {
+        return isoString?.let { isoDateFormatter.parse(it) }
     }
 }

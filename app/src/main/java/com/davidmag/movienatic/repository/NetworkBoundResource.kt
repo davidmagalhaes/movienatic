@@ -50,11 +50,7 @@ abstract class NetworkBoundResource<CacheObject, RequestObject> {
             setValue(Resource.success(it))
         }
 
-        val future = doRequest(createCall()){
-            it
-        }
-
-        future.thenAccept {response ->
+        doRequest(createCall()).thenAccept {response ->
             results.removeSource(cacheSource)
 
             response?.let {
@@ -84,8 +80,8 @@ abstract class NetworkBoundResource<CacheObject, RequestObject> {
     @WorkerThread
     abstract fun saveCallResult(item : RequestObject)
 
-    private fun <T, Q> doRequest(call : Call<T>, extractResult: ((T) -> Q)? = null) : CompletableFuture<Q?> {
-        val deferred = CompletableFuture<Q?>()
+    private fun <T> doRequest(call : Call<T>) : CompletableFuture<T?> {
+        val deferred = CompletableFuture<T?>()
 
         GlobalScope.launch {
             try{
@@ -94,7 +90,7 @@ abstract class NetworkBoundResource<CacheObject, RequestObject> {
                 if(response.isSuccessful){
                     val body = response.body()
                     launch(Dispatchers.Main){
-                        deferred.complete(if (body != null && extractResult != null) extractResult(body) else null)
+                        deferred.complete(body)
                     }
                 }
                 else{
