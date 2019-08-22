@@ -14,7 +14,7 @@ object ConfigurationsRepository {
         App.retrofit.create(ConfigurationsApi::class.java)
     }
 
-    fun getImageConfigurations() : LiveData<Resource<ImageConfigs>>{
+    fun getImageConfigurations(forceFetch : Boolean = false) : LiveData<Resource<ImageConfigs>>{
         return object : NetworkBoundRealmResource<ImageConfigs, ConfigurationsApiResponse>(ImageConfigs::class.java){
             override fun shouldFetch(item: ImageConfigs): Boolean {
                 return true

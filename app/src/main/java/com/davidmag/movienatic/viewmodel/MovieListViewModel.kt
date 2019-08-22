@@ -11,7 +11,6 @@ import kotlinx.coroutines.Deferred
 class MovieListViewModel : ViewModel() {
     val movies = MediatorLiveData<List<Movie>>()
 
-
     fun getMovies() : LiveData<Resource<List<Movie>>> {
         return MovieRepository.getUpcomingMovies()
     }

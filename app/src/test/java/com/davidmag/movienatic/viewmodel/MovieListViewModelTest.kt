@@ -31,8 +31,7 @@ class MovieListViewModelTest  {
 
             assert(viewModel.getMovies() == liveData)
         }
-
-
     }
+
 
 }

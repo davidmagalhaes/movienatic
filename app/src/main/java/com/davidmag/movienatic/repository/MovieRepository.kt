@@ -14,7 +14,7 @@ object MovieRepository {
         App.retrofit.create(MovieApi::class.java)
     }
 
-    fun getUpcomingMovies(page : Int? = null, language : String? = null, region : String? = null) : LiveData<Resource<List<Movie>>> {
+    fun getUpcomingMovies(forceFetch : Boolean = false, page : Int? = null, language : String? = null, region : String? = null) : LiveData<Resource<List<Movie>>> {
         return object : NetworkBoundRealmListResource<Movie, LookupMoviesResponse>(Movie::class.java){
             override fun shouldFetch(item: List<Movie>): Boolean {
                 return true
