@@ -25,12 +25,12 @@ class MovieListActivity : BaseActivity(), MovieClickListener {
         MovieRecyclerViewAdapter(this)
     }
 
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        setContentView(R.layout.activity_movie_list)
-//
-//        initRecyclerView()
-//        subscribeObservers()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_movie_list)
+
+        initRecyclerView()
+        subscribeObservers()
 //        viewModel.getUpcomingMovies().invokeOnCompletion {
 //            it?.let {
 //                val errorMsg = when(it){
@@ -41,20 +41,20 @@ class MovieListActivity : BaseActivity(), MovieClickListener {
 //                Toast.makeText(this, errorMsg, Toast.LENGTH_LONG).show()
 //            }
 //        }
-//    }
-//
-//    fun initRecyclerView(){
-//        movie_list.adapter = mAdapter
-//        movie_list.layoutManager = GridLayoutManager(this, 2)
-//    }
-//
-//    fun subscribeObservers(){
-//        viewModel.getMovies().observe(this, Observer { movies ->
-//            movies?.let {
-//                mAdapter.movieList = it
-//            }
-//        })
-//    }
+    }
+
+    fun initRecyclerView(){
+        movie_list.adapter = mAdapter
+        movie_list.layoutManager = GridLayoutManager(this, 2)
+    }
+
+    fun subscribeObservers(){
+        viewModel.getMovies().observe(this, Observer { movies ->
+            movies?.let {
+                mAdapter.movieList = it.data!!
+            }
+        })
+    }
 
     override fun onMovieClick(v: View, pos: Int) {
 
