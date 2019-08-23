@@ -5,15 +5,17 @@ import androidx.lifecycle.MutableLiveData
 import io.realm.Realm
 import io.realm.RealmModel
 import io.realm.RealmObject
+import io.realm.RealmQuery
+import kotlin.reflect.KClass
 
-abstract class NetworkBoundRealmResource<CacheObject : RealmModel, RequestObject>(private val clazz : Class<CacheObject>)
+abstract class NetworkBoundRealmResource<CacheObject : RealmModel, RequestObject>
     : NetworkBoundResource<CacheObject, RequestObject>() {
 
     override fun loadFromCache(): LiveData<CacheObject> {
         val liveData = MutableLiveData<CacheObject>()
 
         Realm.getDefaultInstance().use { realm ->
-            val result = realm.where(clazz).findFirst()
+            val result = executeQuery(realm)
 
             liveData.value = result
 
@@ -34,6 +36,8 @@ abstract class NetworkBoundRealmResource<CacheObject : RealmModel, RequestObject
             }
         }
     }
+
+    abstract fun executeQuery(realm : Realm) : CacheObject?
 
     abstract fun saveCallResult(item: RequestObject, realmTransaction : Realm)
 }

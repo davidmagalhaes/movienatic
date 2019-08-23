@@ -10,7 +10,7 @@ object DateUtils {
     private lateinit var dateWordsFormatter : SimpleDateFormat
 
     private val isoDateFormatter by lazy {
-        SimpleDateFormat("yyyy-MM-ddTHH:mm:ss", App.currentLocale.value!!)
+        SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", App.currentLocale.value!!)
     }
 
     init {

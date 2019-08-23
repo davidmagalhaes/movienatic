@@ -4,15 +4,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import io.realm.Realm
 import io.realm.RealmModel
+import io.realm.RealmResults
 
-abstract class NetworkBoundRealmListResource<CacheObject : RealmModel, RequestObject>(private val clazz : Class<CacheObject>)
+abstract class NetworkBoundRealmListResource<CacheObject : RealmModel, RequestObject>
     : NetworkBoundResource<List<CacheObject>, RequestObject>() {
 
     override fun loadFromCache(): LiveData<List<CacheObject>> {
         val liveData = MutableLiveData<List<CacheObject>>()
 
         Realm.getDefaultInstance().use { realm ->
-            val resultList = realm.where(clazz).findAll()
+            val resultList = executeQuery(realm)
 
             liveData.value = resultList
 
@@ -31,6 +32,8 @@ abstract class NetworkBoundRealmListResource<CacheObject : RealmModel, RequestOb
             }
         }
     }
+
+    abstract fun executeQuery(realm : Realm) : RealmResults<CacheObject>
 
     abstract fun saveCallResult(item: RequestObject, realmTransaction : Realm)
 }

@@ -5,4 +5,5 @@ object Constants {
     val NETWORK_WRITE_TIMEOUT = 10L
     val NETWORK_CONNECT_TIMEOUT = 10L
 
+    val MOVIES_REFRESH_TIME = 5 * 60L
 }

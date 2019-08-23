@@ -39,16 +39,14 @@ class App : Application() {
 
         val mRealmConfiguration = RealmConfiguration.Builder()
             .name("database.realm")
-            .schemaVersion(3) // skip if you are not managing
+            .schemaVersion(3)
             .deleteRealmIfMigrationNeeded()
             .build()
-
-        //Realm.deleteRealm(mRealmConfiguration) //Remover essa linha depois
 
         Realm.getInstance(mRealmConfiguration)
         Realm.setDefaultConfiguration(mRealmConfiguration)
 
-        currentLocale.postValue(Locale.getDefault())
+        currentLocale.value = Locale.getDefault()
         currentLocale.observeForever {
             Locale.setDefault(it)
         }
@@ -90,6 +88,6 @@ class App : Application() {
 
         super.onCreate()
 
-        ConfigurationsRepository.getImageConfigurations()
+        ConfigurationsRepository.getImageConfigurations(true)
     }
 }

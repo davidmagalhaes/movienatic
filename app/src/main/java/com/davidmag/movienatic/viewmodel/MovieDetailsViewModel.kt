@@ -1,4 +1,6 @@
 package com.davidmag.movienatic.viewmodel
 
-class MovieDetailsViewModel {
+import androidx.lifecycle.ViewModel
+
+class MovieDetailsViewModel : ViewModel() {
 }

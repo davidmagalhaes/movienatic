@@ -14,7 +14,7 @@ import retrofit2.HttpException
 
 abstract class NetworkBoundResource<CacheObject, RequestObject> {
 
-    val TAG = NetworkBoundResource::class.java.name
+    private val TAG = NetworkBoundResource::class.java.name
 
     private val results = MediatorLiveData<Resource<CacheObject>>()
 
@@ -23,15 +23,20 @@ abstract class NetworkBoundResource<CacheObject, RequestObject> {
 
         val cacheSource = loadFromCache()
 
-        results.addSource(cacheSource){cacheObject ->
-            results.removeSource(cacheSource)
+        if(cacheSource.value == null){
+            fetchFromNetwork(cacheSource)
+        }
+        else {
+            results.addSource(cacheSource){cacheObject ->
+                results.removeSource(cacheSource)
 
-            if(shouldFetch(cacheObject)){
-                fetchFromNetwork(cacheSource)
-            }
-            else {
-                results.addSource(cacheSource){
-                    setValue(Resource.success(it))
+                if(shouldFetch(cacheObject)){
+                    fetchFromNetwork(cacheSource)
+                }
+                else {
+                    results.addSource(cacheSource){
+                        setValue(Resource.success(it))
+                    }
                 }
             }
         }
@@ -47,7 +52,7 @@ abstract class NetworkBoundResource<CacheObject, RequestObject> {
         Log.d(TAG, "Fetching from network...")
 
         results.addSource(cacheSource){
-            setValue(Resource.success(it))
+            setValue(Resource.loading(it))
         }
 
         doRequest(createCall()).thenAccept {response ->

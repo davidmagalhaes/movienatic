@@ -8,6 +8,7 @@ import com.davidmag.movienatic.GlideApp
 import com.davidmag.movienatic.R
 import com.davidmag.movienatic.model.ImageConfigs
 import com.davidmag.movienatic.model.Movie
+import com.davidmag.movienatic.repository.Resource
 import com.davidmag.movienatic.util.Constants
 import com.davidmag.movienatic.util.DateUtils
 import io.realm.Realm
