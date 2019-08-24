@@ -1,4 +1,4 @@
-package com.davidmag.movienatic.view
+package com.davidmag.movienatic.activity
 
 import android.content.Intent
 import android.os.Bundle
@@ -13,7 +13,6 @@ import com.davidmag.movienatic.R
 import com.davidmag.movienatic.adapter.MovieClickListener
 import com.davidmag.movienatic.adapter.MovieRecyclerViewAdapter
 import com.davidmag.movienatic.repository.ResourceStatus
-import com.davidmag.movienatic.viewmodel.MovieDetailsViewModel
 import com.davidmag.movienatic.viewmodel.MovieListViewModel
 import kotlinx.android.synthetic.main.activity_base.*
 import kotlinx.android.synthetic.main.activity_movie_list.*
@@ -33,6 +32,7 @@ class MovieListActivity : BaseActivity(), MovieClickListener {
 
         initRecyclerView()
         subscribeObservers()
+        viewModel.lookupUpcomingMovies()
     }
 
     fun initRecyclerView(){
@@ -55,7 +55,7 @@ class MovieListActivity : BaseActivity(), MovieClickListener {
     }
 
     fun subscribeObservers(){
-        viewModel.getMovies().observe(this, Observer { movies ->
+        viewModel.movies.observe(this, Observer { movies ->
             movies?.let {
 
                 if(it.status == ResourceStatus.SUCCESS || it.status == ResourceStatus.ERROR){
@@ -63,19 +63,15 @@ class MovieListActivity : BaseActivity(), MovieClickListener {
                     top_progress_bar.visibility = View.GONE
                 }
 
-                it.data?.let {
-                    mAdapter.movieList = it
-                }
-
                 if(it.status == ResourceStatus.ERROR){
                     Toast.makeText(this, R.string.error_connection_generic, Toast.LENGTH_LONG).show()
                 }
+
+                it.data?.let {
+                    mAdapter.movieList = it
+                }
             }
         })
-    }
-
-    fun lookupUpcomingMovies(){
-        viewModel.lookupUpcomingMovies()
     }
 
     override fun onMovieClick(v: View, pos: Int) {

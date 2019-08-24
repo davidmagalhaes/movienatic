@@ -48,6 +48,8 @@ class MovieRecyclerViewAdapter(private val movieClickListener: MovieClickListene
         movie.releaseDate?.let {
             holder.releaseDateTxt?.text = DateUtils.dateWordsFormat(it)
         }
+
+        holder.itemView.setOnClickListener(holder)
     }
 
     override fun getItemCount(): Int {

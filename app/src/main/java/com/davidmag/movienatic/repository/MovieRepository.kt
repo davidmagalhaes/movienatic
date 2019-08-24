@@ -5,8 +5,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.davidmag.movienatic.App
 import com.davidmag.movienatic.BuildConfig
+import com.davidmag.movienatic.model.ImageConfigs
 import com.davidmag.movienatic.model.Movie
 import com.davidmag.movienatic.rest.api.MovieApi
+import com.davidmag.movienatic.rest.response.ConfigurationsApiResponse
 import com.davidmag.movienatic.rest.response.LookupMoviesResponse
 import com.davidmag.movienatic.util.Constants
 import com.davidmag.movienatic.util.DateUtils
@@ -21,37 +23,19 @@ object MovieRepository {
 
     private val TAG = MovieRepository.javaClass.name
 
-    private var lastRefresh : Date? = null
-
     private val movieApi : MovieApi by lazy {
         App.retrofit.create(MovieApi::class.java)
     }
 
-    fun getUpcomingMovies(forceFetch : Boolean = false, page : Int? = null, language : String? = null, region : String? = null) : LiveData<Resource<List<Movie>>> {
+    fun getUpcomingMovies(page : Int? = null, language : String? = null, region : String? = null) : LiveData<Resource<List<Movie>>> {
         return object : NetworkBoundRealmListResource<Movie, LookupMoviesResponse>(){
             override fun shouldFetch(item: List<Movie>): Boolean {
-                val now = Date()
-                val holdCacheUntil = lastRefresh?.let {
-                    Date(it.time + Constants.MOVIES_REFRESH_TIME * 1000)
-                }
-                val willFetch = forceFetch || holdCacheUntil == null || now.after(holdCacheUntil)
-
-                Log.d(TAG, "Verifying if movie cache should be updated...")
-                Log.d(TAG, "lastRefresh: ${DateUtils.toIsoString(lastRefresh)}")
-                Log.d(TAG, "holdCacheUntil: ${DateUtils.toIsoString(holdCacheUntil)}")
-                Log.d(TAG, "forceFetch: ${forceFetch}")
-
-                if(willFetch){
-                    Log.d(TAG, "PREPARING FOR MOVIE CACHE REFRESH!!!")
-                }
-
-                return willFetch
+                return true
             }
             override fun createCall(): Call<LookupMoviesResponse> {
                 return movieApi.getUpcomingMovies(BuildConfig.API_KEY, page, language, region)
             }
             override fun saveCallResult(item: LookupMoviesResponse, realmTransaction : Realm) {
-                lastRefresh = Date()
                 realmTransaction.copyToRealmOrUpdate(item.results)
             }
             override fun executeQuery(realm: Realm): RealmResults<Movie> {
@@ -64,16 +48,32 @@ object MovieRepository {
     Função para procurar por um único filme pelo id. Por enquanto, carrega apenas do banco local.
     * */
     fun findMovie(id : Int): LiveData<Resource<Movie>>{
-        val liveData = MutableLiveData<Resource<Movie>>()
+        return object : NetworkBoundRealmResource<Movie, Movie>(){
+            override fun shouldFetch(item: Movie): Boolean {
+                val now = Date()
+                val holdCacheUntil = item.lastUpdate?.let {Date(it.time + Constants.MOVIE_REFRESH_TIME * 1000)}
 
-        liveData.value = Resource.loading(null)
+                Log.d(TAG, "Verifying if image configurations cache should be updated...")
+                Log.d(TAG, "lastRefresh: ${DateUtils.toIsoString(item.lastUpdate)}")
+                Log.d(TAG, "holdCacheUntil: ${DateUtils.toIsoString(holdCacheUntil)}")
 
-        Realm.getDefaultInstance().use {realm ->
-            realm.where(Movie::class.java).equalTo("id", id).findFirst()?.let {
-                liveData.value = Resource.success(it)
+                if(holdCacheUntil == null || holdCacheUntil.before(now)){
+                    Log.d(TAG, "PREPARING FOR MOVIE CACHE REFRESH!!!")
+                }
+
+                return holdCacheUntil == null || holdCacheUntil.before(now)
             }
-        }
-
-        return liveData
+            override fun createCall(): Call<Movie> {
+                return movieApi.findMovie(id, BuildConfig.API_KEY)
+            }
+            override fun saveCallResult(item: Movie, realmTransaction : Realm) {
+                item.lastUpdate = Date()
+                item.genres?.let { realmTransaction.copyToRealmOrUpdate(it) }
+                realmTransaction.copyToRealmOrUpdate(item)
+            }
+            override fun executeQuery(realm: Realm): Movie? {
+                return realm.where(Movie::class.java).equalTo("id", id).findFirst()
+            }
+        }.asLiveData()
     }
 }

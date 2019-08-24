@@ -1,97 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
+
+    <FrameLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <RelativeLayout
-            android:id="@+id/video_pager"
-            android:layout_width="match_parent"
-            android:layout_height="200dp">
-
-        <androidx.viewpager.widget.ViewPager
-                android:id="@+id/pager"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-        <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tabDots"
-                android:layout_alignParentBottom="true"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:background="@drawable/tab_selector" />
-    </RelativeLayout>
-
-
-    <!--
-    app:tabBackground="@drawable/tab_selector"
-                app:tabGravity="center"
-                app:tabIndicatorHeight="0dp"
-    -->
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_marginTop="200dp"
-            android:layout_width="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_height="match_parent"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_width="match_parent"
             >
 
-        <TextView
-                android:id="@+id/title"
-                app:layout_constraintTop_toTopOf="parent"
-                android:text="TITULO"
-                android:gravity="center"
+        <ImageView
+                android:id="@+id/cover"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="200dp" />
 
-        <TextView
-                android:id="@+id/releaseDate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="12sp"
-                android:text="releaseDate"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/title" />
 
-        <TextView
-                android:id="@+id/description"
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_marginTop="200dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="descr"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/releaseDate" />
+                android:layout_height="match_parent"
+                android:layout_marginBottom="8dp"
+                >
 
-        <LinearLayout
-                android:id="@+id/genres"
-                android:layout_width="match_parent"
-                android:layout_height="32dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/description"
-                android:gravity="center_vertical"
-                android:orientation="horizontal" >
-            <com.google.android.material.chip.Chip
+            <TextView
+                    android:id="@+id/movie_title"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:text="title"
+                    android:textSize="18sp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    />
+
+            <TextView
+                    android:id="@+id/movie_releaseDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:chipCornerRadius="4dp"
-                    android:text="dssss"/>
-        </LinearLayout>
+                    android:textSize="12sp"
+                    android:text="releaseDate"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/movie_title" />
+
+
+            <LinearLayout
+                    android:id="@+id/movie_genres"
+                    android:layout_width="match_parent"
+                    android:layout_height="24dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/movie_releaseDate"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+
+                    >
+            </LinearLayout>
 
 
 
-        <TextView
-                android:id="@+id/sinopse"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Sinopse"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/genres" />
+            <TextView
+                    android:id="@+id/movie_sinopse"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Sinopse"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/movie_genres" />
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
+
+
 
 <!--    <de.hdodenhof.circleimageview.CircleImageView-->
 <!--            android:id="@+id/circle_image_view"-->
@@ -108,5 +93,5 @@
 
 
 
-</FrameLayout>
+
 

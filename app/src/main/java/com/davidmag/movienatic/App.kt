@@ -5,12 +5,14 @@ import androidx.lifecycle.MutableLiveData
 import com.bumptech.glide.integration.okhttp3.OkHttpUrlLoader
 import com.davidmag.movienatic.repository.ConfigurationsRepository
 import com.davidmag.movienatic.util.Constants
+import com.davidmag.movienatic.util.RealmDeserializerHelper
 import com.facebook.stetho.Stetho
 import com.uphyca.stetho_realm.RealmInspectorModulesProvider
 import io.realm.Realm
 import io.realm.RealmConfiguration
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.google.gson.GsonBuilder
+import io.realm.RealmModel
 import okhttp3.ConnectionPool
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -76,7 +78,10 @@ class App : Application() {
         }
 
         val okHttpClient = okHttp3ClientBuilder.build()
-        val gson = GsonBuilder().setDateFormat("yyyy-MM-dd").create()
+        val gson = GsonBuilder().
+            setDateFormat("yyyy-MM-dd").
+            registerTypeAdapter(RealmModel::class.java, RealmDeserializerHelper()).
+            create()
 
         AppGlideModule.factory = OkHttpUrlLoader.Factory(okHttpClient)
 

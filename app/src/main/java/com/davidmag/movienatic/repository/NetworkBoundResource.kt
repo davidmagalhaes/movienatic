@@ -66,9 +66,7 @@ abstract class NetworkBoundResource<CacheObject, RequestObject> {
                 setValue(Resource.success(it))
             }
         }.exceptionally{e ->
-            results.addSource(cacheSource){
-                setValue(Resource.error(e, it))
-            }
+            setValue(Resource.error(e, null))
             null
         }
     }
@@ -102,7 +100,7 @@ abstract class NetworkBoundResource<CacheObject, RequestObject> {
                     throw HttpException(response)
                 }
             }
-            catch(e : Exception){
+            catch(e : Throwable){
                 e.printStackTrace()
                 launch(Dispatchers.Main){
                     deferred.completeExceptionally(e)

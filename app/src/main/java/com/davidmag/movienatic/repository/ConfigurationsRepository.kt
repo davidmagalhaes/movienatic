@@ -25,7 +25,7 @@ object ConfigurationsRepository {
         return object : NetworkBoundRealmResource<ImageConfigs, ConfigurationsApiResponse>(){
             override fun shouldFetch(item: ImageConfigs): Boolean {
                 val now = Date()
-                val holdCacheUntil = Date(item.lastUpdate.time + Constants.MOVIES_REFRESH_TIME * 1000)
+                val holdCacheUntil = Date(item.lastUpdate.time + Constants.IMAGECONFIGS_REFRESH_TIME * 1000)
                 val willFetch = forceFetch || now.after(holdCacheUntil)
 
                 Log.d(TAG, "Verifying if image configurations cache should be updated...")
@@ -43,6 +43,7 @@ object ConfigurationsRepository {
                 return configurationsApi.updateConfigurations(BuildConfig.API_KEY)
             }
             override fun saveCallResult(item: ConfigurationsApiResponse, realmTransaction : Realm) {
+                item.images.lastUpdate = Date()
                 realmTransaction.copyToRealmOrUpdate(item.images)
             }
             override fun executeQuery(realm: Realm): ImageConfigs? {

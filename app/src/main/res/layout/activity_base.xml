@@ -9,12 +9,15 @@
             android:layout_width="match_parent"
             android:layout_height="32dp"
             android:visibility="gone"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:background="#ccc"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            />
 
     <FrameLayout
             android:id="@+id/activity_content"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             app:layout_constraintBottom_toTopOf="@+id/bottom_progress_bar"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -23,6 +26,8 @@
             android:layout_width="match_parent"
             android:layout_height="32dp"
             android:visibility="gone"
+            android:background="@color/colorPrimaryDark"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
