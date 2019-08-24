@@ -2,7 +2,6 @@ package com.davidmag.movienatic.view
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Parcelable
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.Observer
@@ -44,9 +43,12 @@ class MovieListActivity : BaseActivity(), MovieClickListener {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
 
-                if(recyclerView.canScrollVertically(1)){
+                if(!recyclerView.canScrollVertically(1) && !viewModel.pagesExhausted){
                     bottom_progress_bar.visibility = View.VISIBLE
                     viewModel.searchNextPage()
+                }
+                else{
+                    bottom_progress_bar.visibility = View.GONE
                 }
             }
         })
@@ -77,7 +79,7 @@ class MovieListActivity : BaseActivity(), MovieClickListener {
     }
 
     override fun onMovieClick(v: View, pos: Int) {
-        val intent = Intent(this, MovieDetailsViewModel::class.java)
+        val intent = Intent(this, MovieDetailsActivity::class.java)
         intent.putExtra("movie", mAdapter.movieList[pos].id)
 
         startActivity(intent)
