@@ -3,7 +3,7 @@ Android App cujo objetivo é manter os usuários atualizados sobre os novos film
 
 ### Como instalar
 
-A aplicação pode ser executada com facilidade, apenas abrindo ela com o Android Studio 3.5 e
+A aplicação pode ser executada com facilidade apenas executando __git clone__ do projeto, realizando um __git checkout develop__ dentro da pasta do projeto, abrir ele no Android Studio 3.5 e executá-lo em algum smartphone ou emulador Android.
 
 ### Issues
 
