@@ -3,7 +3,7 @@ Android App cujo objetivo é manter os usuários atualizados sobre os novos film
 
 ### Como instalar
 
-A aplicação pode ser executada com facilidade, apenas abrindo ela com o Android Studio 3.5 e
+A aplicação pode ser executada com facilidade apenas executando __git clone__ do projeto, realizando um __git checkout develop__ dentro da pasta do projeto, abrir ele no Android Studio 3.5 e executá-lo em algum smartphone ou emulador Android.
 
 ### Issues
 
@@ -11,7 +11,7 @@ A aplicação pode ser executada com facilidade, apenas abrindo ela com o Androi
    * A tela de detalhes dos filmes poderia exibir os trailers e teasers dos filmes e poderia ter mais detalhamento
    * A tela de listagem poderia oferecer um refresh por swipe e ter uma barra de pesquisa
 
- * Os testes unitários do Mockk pararam de funcionar com a atualização recente do Android Studio e ainda não consegui colocar para funcionar
+ * Os testes unitários do Mockk pararam de funcionar depois da atualização recente do Android Studio e ainda estão quebradas (Alguma coisa haver com a biblioteca ByteBuddy do Mockk e a VM Hotspot)
 
 ### Stack
  * MVVM
