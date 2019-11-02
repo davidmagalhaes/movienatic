@@ -5,4 +5,8 @@
     <string name="error_connection_timeout">Não foi possível conectar ao servidor: Timeout</string>
     <string name="error_generic_explained">Ocorreu um erro: %s</string>
     <string name="error_connection_generic">Erro ao conectar com o servidor. Verifique sua conexão com a internet.</string>
+    <string name="presentation_activity_movietabhost_firsttab">Ação</string>
+    <string name="presentation_activity_movietabhost_secondtab">Drama</string>
+    <string name="presentation_activity_movietabhost_thirdtab">Fantasia</string>
+    <string name="presentation_activity_movietabhost_fourthtab">Ficção</string>
 </resources>

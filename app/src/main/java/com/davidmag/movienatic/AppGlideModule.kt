@@ -10,7 +10,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.Registry
 import java.io.InputStream
 
-
 @GlideModule
 class AppGlideModule : AppGlideModule(){
     companion object {
