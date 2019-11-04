@@ -1,6 +1,6 @@
 package com.davidmag.movienatic.presentation.adapter
 
-import android.content.Context
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
@@ -11,12 +11,17 @@ import androidx.fragment.app.FragmentPagerAdapter
  */
 class MovieGenrePagerAdapter(
         fm: FragmentManager,
-        private val context: Context,
         private val tabs : List<TabInfo>
 ) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     override fun getItem(position: Int): Fragment {
         return tabs[position].fragment
+    }
+
+    override fun instantiateItem(container: ViewGroup, position: Int): Any {
+        return tabs[position].fragment.apply {
+            arguments = tabs[position].args
+        }
     }
 
     override fun getPageTitle(position: Int): CharSequence? {

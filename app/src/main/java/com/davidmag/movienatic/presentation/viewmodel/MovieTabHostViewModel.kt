@@ -10,19 +10,12 @@ import com.davidmag.movienatic.domain.usecase.*
 import io.reactivex.Maybe
 import javax.inject.Inject
 
-class MovieTabHostViewModel @Inject constructor() : ViewModel() {
-
-    @Inject
-    lateinit var getImageConfigsUseCase: GetImageConfigsUseCase
-
-    @Inject
-    lateinit var searchMoviesUseCase: SearchMoviesUseCase
-
-    @Inject
-    lateinit var updateImageConfigsUseCase: UpdateImageConfigsUseCase
-
-    @Inject
-    lateinit var getGenresUseCase: GetGenresUseCase
+class MovieTabHostViewModel(
+    private val getImageConfigsUseCase: GetImageConfigsUseCase,
+    private val searchMoviesUseCase: SearchMoviesUseCase,
+    private val updateImageConfigsUseCase: UpdateImageConfigsUseCase,
+    private val getGenresUseCase: GetGenresUseCase
+) : ViewModel() {
 
     fun updateImageConfigs() : LiveData<*>{
         return LiveDataReactiveStreams.fromPublisher(updateImageConfigsUseCase.execute().toFlowable())

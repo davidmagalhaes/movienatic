@@ -10,19 +10,38 @@ import com.davidmag.movienatic.presentation.viewmodel.MovieTabHostViewModel
 import dagger.Component
 import dagger.android.AndroidInjectionModule
 import dagger.android.support.AndroidSupportInjectionModule
+import javax.inject.Singleton
+import android.app.Application
+import com.davidmag.movienatic.presentation.activity.MovieDetailsActivity
+import com.davidmag.movienatic.presentation.activity.MovieListTabFragment
+import com.davidmag.movienatic.presentation.activity.MovieTabHostActivity
+import dagger.BindsInstance
 
+
+
+@Singleton
 @Component(
     modules = [
         NetworkModule::class,
         DatasourceModule::class,
         RepositoryModule::class,
         UseCaseModule::class,
+        ViewModelModule::class,
         AndroidInjectionModule::class,
         AndroidSupportInjectionModule::class
     ]
 )
 interface PresentationComponent {
-    fun inject(movieDetailsViewModel: MovieDetailsViewModel)
-    fun inject(movieListTabViewModel: MovieListTabViewModel)
-    fun inject(movieTabHostViewModel: MovieTabHostViewModel)
+
+    @Component.Builder
+    interface Builder {
+        @BindsInstance
+        fun application(application: Application): Builder
+
+        fun build(): PresentationComponent
+    }
+
+    fun inject(movieTabHostActivity: MovieTabHostActivity)
+    fun inject(movieListTabFragment: MovieListTabFragment)
+    fun inject(movieDetailsActivity: MovieDetailsActivity)
 }

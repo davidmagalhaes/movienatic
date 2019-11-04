@@ -11,16 +11,11 @@ import com.davidmag.movienatic.domain.usecase.GetImageConfigsUseCase
 import com.davidmag.movienatic.domain.usecase.GetMoviesUseCase
 import javax.inject.Inject
 
-class MovieListTabViewModel @Inject constructor() : ViewModel() {
-
-    @Inject
-    lateinit var getMoviesUseCase: GetMoviesUseCase
-
-    @Inject
-    lateinit var fetchMoviesUseCase: FetchMoviesUseCase
-
-    @Inject
-    lateinit var getImageConfigsUseCase: GetImageConfigsUseCase
+class MovieListTabViewModel @Inject constructor(
+    val getMoviesUseCase: GetMoviesUseCase,
+    val fetchMoviesUseCase: FetchMoviesUseCase,
+    val getImageConfigsUseCase: GetImageConfigsUseCase
+) : ViewModel() {
 
     fun getMovies(genreId : Int) : LiveData<List<Movie>> {
         return LiveDataReactiveStreams.fromPublisher(getMoviesUseCase.execute(genreId = genreId))

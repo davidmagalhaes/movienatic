@@ -6,7 +6,6 @@ import com.davidmag.movienatic.AppGlideModule
 import com.davidmag.movienatic.BuildConfig
 import com.davidmag.movienatic.data.source.remote.api.ConfigurationsApi
 import com.davidmag.movienatic.data.source.remote.api.MovieApi
-import com.davidmag.movienatic.infrastructure.util.Constants
 import com.facebook.stetho.Stetho
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.google.gson.GsonBuilder
@@ -25,9 +24,9 @@ class NetworkModule {
     val okHttpClient by lazy {
         val okHttp3ClientBuilder = OkHttpClient.Builder()
             .connectionPool(ConnectionPool(10, 1, TimeUnit.MINUTES))
-            .readTimeout(Constants.NETWORK_READ_TIMEOUT, TimeUnit.SECONDS)
-            .connectTimeout(Constants.NETWORK_CONNECT_TIMEOUT, TimeUnit.SECONDS)
-            .writeTimeout(Constants.NETWORK_WRITE_TIMEOUT, TimeUnit.SECONDS)
+            .readTimeout(BuildConfig.NETWORK_TIMEOUT, TimeUnit.SECONDS)
+            .connectTimeout(BuildConfig.NETWORK_TIMEOUT, TimeUnit.SECONDS)
+            .writeTimeout(BuildConfig.NETWORK_TIMEOUT, TimeUnit.SECONDS)
 
 
         if(BuildConfig.DEBUG){

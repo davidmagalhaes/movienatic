@@ -16,18 +16,19 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField "Long", "NETWORK_TIMEOUT", "java.util.concurrent.TimeUnit.SECONDS.toMillis(15)"
+
     }
     buildTypes {
         debug {
             buildConfigField "String", "API_KEY", "\"4df2cc1130326c08f0a5bb3e20092e79\""
             buildConfigField "String", "SERVER_URL", "\"https://api.themoviedb.org/3/\""
-            buildConfigField "String", "APP_VERSION", "\"0.0.1\""
         }
 
         release {
             buildConfigField "String", "API_KEY", "\"4df2cc1130326c08f0a5bb3e20092e79\""
             buildConfigField "String", "SERVER_URL", "\"https://api.themoviedb.org/3/\""
-            buildConfigField "String", "APP_VERSION", "\"0.0.1\""
 
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'

@@ -10,15 +10,21 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.davidmag.movienatic.R
+import com.davidmag.movienatic.infrastructure.App
 import com.davidmag.movienatic.presentation.adapter.MovieClickListener
 import com.davidmag.movienatic.presentation.adapter.MovieRecyclerViewAdapter
+import com.davidmag.movienatic.presentation.di.DaggerPresentationComponent
 import com.davidmag.movienatic.presentation.viewmodel.MovieListTabViewModel
+import com.davidmag.movienatic.presentation.viewmodel.MovieTabHostViewModel
+import dagger.android.AndroidInjection
+import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.activity_movie_list.*
+import javax.inject.Inject
 
-class MovieListTabFragment : Fragment(), MovieClickListener {
-    val viewModel by lazy {
-        ViewModelProvider(this).get(MovieListTabViewModel::class.java)
-    }
+class MovieListTabFragment : BaseFragment(), MovieClickListener {
+
+    @Inject
+    lateinit var viewModel : MovieListTabViewModel
 
     val mAdapter by lazy {
         MovieRecyclerViewAdapter(context!!, this)
@@ -34,6 +40,11 @@ class MovieListTabFragment : Fragment(), MovieClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        DaggerPresentationComponent.builder().
+            application(App.instance).build().inject(this)
+
+        viewModel = initViewModel { viewModel }
 
         recycler_view.layoutManager = GridLayoutManager(context!!, 2)
         recycler_view.adapter = mAdapter
