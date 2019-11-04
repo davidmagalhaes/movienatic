@@ -26,37 +26,39 @@ class MovieTabHostActivity @Inject constructor() : BaseActivity() {
 
         setContentView(R.layout.activity_movie_tabhost)
 
+        val movieGenrePagerAdapter = MovieGenrePagerAdapter(supportFragmentManager, arrayListOf())
+        val viewPager: ViewPager = findViewById(R.id.view_pager)
+        viewPager.adapter = movieGenrePagerAdapter
+        val tabs: TabLayout = findViewById(R.id.tabs)
+        tabs.setupWithViewPager(viewPager)
+
         viewModel = initViewModel { viewModel }
 
-        viewModel.getGenres().observe(this, Observer {
-            val movieGenrePagerAdapter = MovieGenrePagerAdapter(
-                supportFragmentManager,  arrayListOf(
-                    TabInfo(
-                        title = getString(R.string.presentation_activity_movietabhost_firsttab),
-                        fragment = MovieListTabFragment(),
-                        args  = Bundle().apply { putInt("genre_id", it[0].id!!)  }
-                    ),
-                    TabInfo(
-                        title = getString(R.string.presentation_activity_movietabhost_secondtab),
-                        fragment = MovieListTabFragment(),
-                        args  = Bundle().apply { putInt("genre_id", it[1].id!!)  }
-                    ),
-                    TabInfo(
-                        title = getString(R.string.presentation_activity_movietabhost_thirdtab),
-                        fragment = MovieListTabFragment(),
-                        args  = Bundle().apply { putInt("genre_id", it[2].id!!)  }
-                    ),
-                    TabInfo(
-                        title = getString(R.string.presentation_activity_movietabhost_fourthtab),
-                        fragment = MovieListTabFragment(),
-                        args  = Bundle().apply { putInt("genre_id", it[3].id!!)  }
-                    )
-                ))
+        viewModel.fetchGenres()
 
-            val viewPager: ViewPager = findViewById(R.id.view_pager)
-            viewPager.adapter = movieGenrePagerAdapter
-            val tabs: TabLayout = findViewById(R.id.tabs)
-            tabs.setupWithViewPager(viewPager)
+        viewModel.genres.observe(this, Observer {
+            movieGenrePagerAdapter.mTabs = arrayListOf(
+                TabInfo(
+                    title = getString(R.string.presentation_activity_movietabhost_firsttab),
+                    fragment = MovieListTabFragment(),
+                    args  = Bundle().apply { putInt("genre_id", it[0].id!!)  }
+                ),
+                TabInfo(
+                    title = getString(R.string.presentation_activity_movietabhost_secondtab),
+                    fragment = MovieListTabFragment(),
+                    args  = Bundle().apply { putInt("genre_id", it[1].id!!)  }
+                ),
+                TabInfo(
+                    title = getString(R.string.presentation_activity_movietabhost_thirdtab),
+                    fragment = MovieListTabFragment(),
+                    args  = Bundle().apply { putInt("genre_id", it[2].id!!)  }
+                ),
+                TabInfo(
+                    title = getString(R.string.presentation_activity_movietabhost_fourthtab),
+                    fragment = MovieListTabFragment(),
+                    args  = Bundle().apply { putInt("genre_id", it[3].id!!)  }
+                )
+            )
         })
     }
 }

@@ -9,21 +9,21 @@ import io.reactivex.Maybe
 import io.realm.Realm
 
 class ImageConfigsLocalDatasourceImpl : ImageConfigsLocalDatasource {
+
+    val realm = Realm.getDefaultInstance()
+
     override fun cache(configs: ImageConfigs): Maybe<*> {
         return Maybe.fromCallable {
-            Realm.getDefaultInstance().use { realm ->
-                realm.executeTransaction {
-                    it.copyToRealmOrUpdate(ImageConfigsLocalMapper.toDto(configs))
-                }
+            realm.executeTransaction {
+                it.copyToRealmOrUpdate(ImageConfigsLocalMapper.toDto(configs))
             }
         }
     }
 
     override fun get(): Flowable<List<ImageConfigs>> {
-        return Realm.getDefaultInstance().use { realm ->
-            realm.where(ImageConfigsDb::class.java).findAll().asFlowable().map {
-                ImageConfigsLocalMapper.toEntity(it)
-            }
+        return realm.where(ImageConfigsDb::class.java).findAllAsync().
+            asFlowable().map {
+            ImageConfigsLocalMapper.toEntity(it)
         }
     }
 }

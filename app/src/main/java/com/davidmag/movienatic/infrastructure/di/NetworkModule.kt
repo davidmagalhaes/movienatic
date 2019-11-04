@@ -1,5 +1,7 @@
 package com.davidmag.movienatic.infrastructure.di
 
+import br.com.softbuilder.patronuskiosk.infrastructure.util.GsonDateTimeTypeAdapter
+import br.com.softbuilder.patronuskiosk.infrastructure.util.GsonSimpleDateTypeAdapter
 import com.bumptech.glide.integration.okhttp3.OkHttpUrlLoader
 import com.davidmag.movienatic.infrastructure.App
 import com.davidmag.movienatic.AppGlideModule
@@ -13,6 +15,8 @@ import dagger.Module
 import dagger.Provides
 import okhttp3.ConnectionPool
 import okhttp3.OkHttpClient
+import org.threeten.bp.LocalDate
+import org.threeten.bp.OffsetDateTime
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
@@ -24,9 +28,9 @@ class NetworkModule {
     val okHttpClient by lazy {
         val okHttp3ClientBuilder = OkHttpClient.Builder()
             .connectionPool(ConnectionPool(10, 1, TimeUnit.MINUTES))
-            .readTimeout(BuildConfig.NETWORK_TIMEOUT, TimeUnit.SECONDS)
-            .connectTimeout(BuildConfig.NETWORK_TIMEOUT, TimeUnit.SECONDS)
-            .writeTimeout(BuildConfig.NETWORK_TIMEOUT, TimeUnit.SECONDS)
+            .readTimeout(BuildConfig.NETWORK_TIMEOUT, TimeUnit.MILLISECONDS)
+            .connectTimeout(BuildConfig.NETWORK_TIMEOUT, TimeUnit.MILLISECONDS)
+            .writeTimeout(BuildConfig.NETWORK_TIMEOUT, TimeUnit.MILLISECONDS)
 
 
         if(BuildConfig.DEBUG){
@@ -47,7 +51,12 @@ class NetworkModule {
     }
 
     val gson by lazy {
-        GsonBuilder().setDateFormat("yyyy-MM-dd").create()
+        val gsonBuilder = GsonBuilder().setDateFormat("yyyy-MM-dd")
+
+        gsonBuilder.registerTypeAdapter(OffsetDateTime::class.java, GsonDateTimeTypeAdapter)
+        gsonBuilder.registerTypeAdapter(LocalDate::class.java, GsonSimpleDateTypeAdapter)
+
+        gsonBuilder.create()
     }
 
     val retrofit by lazy {

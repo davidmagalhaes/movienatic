@@ -7,6 +7,7 @@ import com.davidmag.movienatic.infrastructure.di.DaggerApplicationComponent
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
+import io.realm.Realm
 import java.util.*
 import javax.inject.Inject
 
@@ -28,6 +29,8 @@ class App : Application() {
     }
 
     override fun onCreate() {
+        Realm.init(this)
+
         currentLocale.value = Locale.getDefault()
         currentLocale.observeForever {
             Locale.setDefault(it)

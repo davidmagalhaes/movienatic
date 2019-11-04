@@ -2,7 +2,6 @@ package com.davidmag.movienatic.data.repository
 
 import com.davidmag.movienatic.data.source.boundary.local.MovieLocalDataSource
 import com.davidmag.movienatic.data.source.boundary.remote.MovieRemoteDatasource
-import com.davidmag.movienatic.domain.model.Genre
 import com.davidmag.movienatic.domain.model.Movie
 import com.davidmag.movienatic.domain.repository.MovieRepository
 import io.reactivex.Flowable
@@ -22,18 +21,18 @@ class MovieRepositoryImpl(
 
     override fun find(id: String): Maybe<*> {
         return remoteDatasource.find(id).subscribeOn(Schedulers.io()).flatMap { movie ->
-            localDatasource.patch(movie).subscribeOn(Schedulers.single())
+            localDatasource.patch(movie)
         }
     }
 
-    override fun fetch(): Maybe<*> {
-        return remoteDatasource.fetch().subscribeOn(Schedulers.io()).
+    override fun fetch(genreId : Int?): Maybe<*> {
+        return remoteDatasource.fetch(genreId).subscribeOn(Schedulers.io()).
             flatMap {
                 localDatasource.cache(it).subscribeOn(Schedulers.single())
             }
     }
 
     override fun get(id : String?, genreId : Int?): Flowable<List<Movie>> {
-        return localDatasource.get(id, genreId).subscribeOn(Schedulers.single())
+        return localDatasource.get(id, genreId)
     }
 }

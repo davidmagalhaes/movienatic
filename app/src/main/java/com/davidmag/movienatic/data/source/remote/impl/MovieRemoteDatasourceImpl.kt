@@ -20,8 +20,9 @@ class MovieRemoteDatasourceImpl(
         return findMovies(movieApi.search(BuildConfig.API_KEY, query))
     }
 
-    override fun fetch() : Maybe<List<Movie>> {
-        return findMovies(movieApi.lookup(BuildConfig.API_KEY, "28, 18, 14, 878"))
+    override fun fetch(genreId : Int?) : Maybe<List<Movie>> {
+        return findMovies(movieApi.lookup(BuildConfig.API_KEY,
+            if(genreId != null) "$genreId" else "28, 18, 14, 878"))
     }
 
     override fun find(id : String) : Maybe<Movie?> {
