@@ -1,5 +1,5 @@
-# movienatic
-Android App cujo objetivo é manter os usuários atualizados sobre os novos filmes.
+# Movienatic
+Android App cujo objetivo é manter os usuários atualizados sobre filmes. É também uma aplicação em que procuro aplicar, da melhor forma possível, ferramentas, paradigmas e arquiteturas reconhecidas do mercado.
 
 ### Como instalar
 
