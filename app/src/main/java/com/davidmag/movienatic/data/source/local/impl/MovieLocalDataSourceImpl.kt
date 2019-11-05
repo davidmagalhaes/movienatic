@@ -1,12 +1,15 @@
 package com.davidmag.movienatic.data.source.local.impl
 
 import com.davidmag.movienatic.data.source.boundary.local.MovieLocalDataSource
+import com.davidmag.movienatic.data.source.local.dto.GenreDb
 import com.davidmag.movienatic.data.source.local.dto.MovieDb
+import com.davidmag.movienatic.data.source.local.mapper.GenreLocalMapper
 import com.davidmag.movienatic.data.source.local.mapper.MovieLocalMapper
 import com.davidmag.movienatic.domain.model.Movie
 import io.reactivex.Flowable
 import io.reactivex.Maybe
 import io.realm.Realm
+import io.realm.RealmResults
 
 class MovieLocalDataSourceImpl : MovieLocalDataSource {
 
@@ -16,6 +19,11 @@ class MovieLocalDataSourceImpl : MovieLocalDataSource {
         return Maybe.fromCallable {
             Realm.getDefaultInstance().use { r ->
                 r.executeTransaction { transaction ->
+                    movies.forEach {
+                        it.genres?.let {
+                            transaction.copyToRealmOrUpdate(GenreLocalMapper.toDto(it))
+                        }
+                    }
                     transaction.copyToRealmOrUpdate(MovieLocalMapper.toDto(movies))
                 }
             }
@@ -24,24 +32,33 @@ class MovieLocalDataSourceImpl : MovieLocalDataSource {
 
     override fun patch(movie: Movie): Maybe<*> {
         return Maybe.fromCallable {
-            realm.executeTransaction { transaction ->
-                transaction.copyToRealmOrUpdate(MovieLocalMapper.toDto(movie))
+            Realm.getDefaultInstance().use { r ->
+                r.executeTransaction { transaction ->
+                    transaction.copyToRealmOrUpdate(MovieLocalMapper.toDto(movie))
+                }
             }
         }
     }
 
-    override fun get(id : String?, genreId : Int?) : Flowable<List<Movie>> {
-        val query = realm.where(MovieDb::class.java)
+    override fun get(id : Int?, genreId : Int?) : Flowable<List<Movie>> {
+        var query = realm.where(MovieDb::class.java)
 
         if(id != null){
-            query.equalTo("id", id)
+            query = query.equalTo("id", id)
         }
 
-        if(genreId != null){
-            //query.equalTo("genres.id", genreId)
-        }
-
-        return query.findAllAsync().asFlowable().map {
+        return query.findAllAsync().asFlowable().map{
+            if(genreId != null){
+                it.filter {
+                    it.genres.orEmpty().filter {
+                        it.id == genreId
+                    }.isNotEmpty()
+                }
+            }
+            else {
+                it
+            }
+        }.map {
             MovieLocalMapper.toEntity(it)
         }
     }

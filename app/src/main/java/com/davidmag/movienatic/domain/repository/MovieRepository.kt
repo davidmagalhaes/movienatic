@@ -7,6 +7,6 @@ import io.reactivex.Maybe
 interface MovieRepository {
     fun search(query : String) : Maybe<List<Movie>>
     fun fetch(genreId : Int? = null) : Maybe<*>
-    fun find(id : String) : Maybe<*>
-    fun get(id : String? = null, genreId : Int? = null) : Flowable<List<Movie>>
+    fun find(id : Int) : Maybe<*>
+    fun get(id : Int? = null, genreId : Int? = null) : Flowable<List<Movie>>
 }

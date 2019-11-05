@@ -7,7 +7,7 @@ import io.reactivex.Flowable
 class GetMoviesUseCase(
     val movieRepository: MovieRepository
 ) {
-    fun execute(id : String? = null, genreId : Int? = null) : Flowable<List<Movie>> {
+    fun execute(id : Int? = null, genreId : Int? = null) : Flowable<List<Movie>> {
         return movieRepository.get(id, genreId)
     }
 }

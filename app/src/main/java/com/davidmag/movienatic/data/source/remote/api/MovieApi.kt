@@ -21,8 +21,8 @@ interface MovieApi {
     ) : Call<LookupMoviesResponse>
 
     @GET("movie/{movie_id}")
-    fun findById(@Query("api_key")    apiKey : String,
-                 @Query("movie_id")   movie_id : String
+    fun findById(@Path("movie_id")   movie_id : String,
+                 @Query("api_key")    apiKey : String
     ) : Call<MovieObject>
 
     @GET("discover/movie")

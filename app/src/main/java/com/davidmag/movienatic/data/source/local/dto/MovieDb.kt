@@ -3,7 +3,6 @@ package com.davidmag.movienatic.data.source.local.dto
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
-import java.util.*
 
 open class MovieDb : RealmObject() {
     @PrimaryKey
@@ -11,6 +10,7 @@ open class MovieDb : RealmObject() {
 
     var posterPath : String? = null
     var releaseDate : String? = null
+
     var genres : RealmList<GenreDb>? = null
     var backdropPath : String? = null
     var title: String? = null

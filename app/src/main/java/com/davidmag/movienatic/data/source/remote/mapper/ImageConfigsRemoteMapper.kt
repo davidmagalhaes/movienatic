@@ -5,22 +5,22 @@ import com.davidmag.movienatic.data.source.remote.dto.ImageConfigsObject
 import com.davidmag.movienatic.domain.model.ImageConfigs
 
 object ImageConfigsRemoteMapper : EntityDtoMapper<ImageConfigs, ImageConfigsObject>() {
-    override val toEntityMapper: (ImageConfigsObject) -> ImageConfigs
-        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+    override val toEntityMapper: (ImageConfigsObject) -> ImageConfigs = {
+        val entity = ImageConfigs()
 
-    override val toDtoMapper: (ImageConfigs) -> ImageConfigsObject = {
-        val dto = ImageConfigsObject()
+        entity.id = 1
+        entity.backdropSizes = it.backdropSizes
+        entity.baseUrl = it.baseUrl
+        entity.lastUpdate = it.lastUpdate
+        entity.logoSizes = it.logoSizes
+        entity.posterSizes = it.posterSizes
+        entity.secureBaseUrl = it.secureBaseUrl
 
-        dto.id = it.id
-        dto.backdropSizes = it.backdropSizes
-        dto.baseUrl = it.baseUrl
-        dto.lastUpdate = it.lastUpdate
-        dto.logoSizes = it.logoSizes
-        dto.posterSizes = it.posterSizes
-        dto.secureBaseUrl = it.secureBaseUrl
-
-        dto
+        entity
     }
 
+
+    override val toDtoMapper: (ImageConfigs) -> ImageConfigsObject
+        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
 
 }

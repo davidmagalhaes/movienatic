@@ -25,10 +25,18 @@ class MovieTabHostViewModel(
     val genres = MediatorLiveData<List<Genre>>()
 
     fun updateImageConfigs() : LiveData<*> {
-        return LiveDataReactiveStreams.fromPublisher(
+        val source =  LiveDataReactiveStreams.fromPublisher(
             updateImageConfigsUseCase.execute().toFlowable().
                 observeOn(AndroidSchedulers.mainThread())
         )
+
+        val mediator = MediatorLiveData<Any>()
+
+        mediator.addSource(source){
+            mediator.removeSource(source)
+        }
+
+        return mediator
     }
 
     fun searchMovies(query : String) : LiveData<List<Movie>> {

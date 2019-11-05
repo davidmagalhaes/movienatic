@@ -9,4 +9,6 @@
     <string name="presentation_activity_movietabhost_secondtab">Drama</string>
     <string name="presentation_activity_movietabhost_thirdtab">Fantasia</string>
     <string name="presentation_activity_movietabhost_fourthtab">Ficção</string>
+    <string name="presentation_activity_movietabhost_menu_search">Pessquisar</string>
+    <string name="search_hint">Pesquisar por filmes</string>
 </resources>

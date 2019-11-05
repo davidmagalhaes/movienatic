@@ -11,6 +11,7 @@ import com.davidmag.movienatic.data.source.remote.api.MovieApi
 import com.facebook.stetho.Stetho
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.google.gson.GsonBuilder
+import com.uphyca.stetho_realm.RealmInspectorModulesProvider
 import dagger.Module
 import dagger.Provides
 import okhttp3.ConnectionPool
@@ -37,6 +38,7 @@ class NetworkModule {
             Stetho.initialize(
                 Stetho.newInitializerBuilder(App.instance)
                     .enableDumpapp(Stetho.defaultDumperPluginsProvider(App.instance))
+                    .enableWebKitInspector(RealmInspectorModulesProvider.builder(App.instance).build())
                     .build()
             )
 

@@ -14,8 +14,10 @@ class ImageConfigsLocalDatasourceImpl : ImageConfigsLocalDatasource {
 
     override fun cache(configs: ImageConfigs): Maybe<*> {
         return Maybe.fromCallable {
-            realm.executeTransaction {
-                it.copyToRealmOrUpdate(ImageConfigsLocalMapper.toDto(configs))
+            Realm.getDefaultInstance().use { realm ->
+                realm.executeTransaction {
+                    it.copyToRealmOrUpdate(ImageConfigsLocalMapper.toDto(configs))
+                }
             }
         }
     }

@@ -10,12 +10,19 @@ import com.davidmag.movienatic.presentation.adapter.TabInfo
 import com.davidmag.movienatic.presentation.di.DaggerPresentationComponent
 import com.davidmag.movienatic.presentation.viewmodel.MovieTabHostViewModel
 import com.google.android.material.tabs.TabLayout
-import dagger.android.AndroidInjection
 import javax.inject.Inject
+import android.view.Menu
+import android.view.MenuItem
+import androidx.appcompat.view.ActionMode
+import androidx.appcompat.widget.SearchView
+import kotlinx.android.synthetic.main.activity_movie_tabhost.*
 
-class MovieTabHostActivity @Inject constructor() : BaseActivity() {
+
+class MovieTabHostActivity : BaseActivity() {
 
     @Inject lateinit var viewModel : MovieTabHostViewModel
+
+    private var searchItem : MenuItem? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,6 +33,8 @@ class MovieTabHostActivity @Inject constructor() : BaseActivity() {
 
         setContentView(R.layout.activity_movie_tabhost)
 
+        setSupportActionBar(toolbar)
+
         val movieGenrePagerAdapter = MovieGenrePagerAdapter(supportFragmentManager, arrayListOf())
         val viewPager: ViewPager = findViewById(R.id.view_pager)
         viewPager.adapter = movieGenrePagerAdapter
@@ -34,6 +43,7 @@ class MovieTabHostActivity @Inject constructor() : BaseActivity() {
 
         viewModel = initViewModel { viewModel }
 
+        viewModel.updateImageConfigs().observe(this, Observer {})
         viewModel.fetchGenres()
 
         viewModel.genres.observe(this, Observer {
@@ -60,5 +70,53 @@ class MovieTabHostActivity @Inject constructor() : BaseActivity() {
                 )
             )
         })
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val mActionModeSearchCallback = object : ActionMode.Callback {
+
+            private var mSearchView: SearchView? = null
+
+            override fun onCreateActionMode(actionMode: ActionMode, menu: Menu): Boolean {
+                menuInflater.inflate(R.menu.activity_movietabhost, menu)
+
+                val menuItem =  menu.findItem(R.id.action_search)!!
+
+                mSearchView = menuItem.actionView as SearchView
+                mSearchView!!.queryHint = getString(R.string.search_hint)
+
+                return true
+            }
+
+            override fun onPrepareActionMode(actionMode: ActionMode, menu: Menu): Boolean {
+                mSearchView!!.requestFocus()
+                return true
+            }
+
+            override fun onActionItemClicked(actionMode: ActionMode, menuItem: MenuItem): Boolean {
+                return false
+            }
+
+            override fun onDestroyActionMode(actionMode: ActionMode) {
+
+            }
+        } as ActionMode.Callback
+
+        startSupportActionMode(mActionModeSearchCallback)
+
+        return true;
+    }
+
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+
+//        searchItem = menu.add(R.string.presentation_activity_movietabhost_menu_search).apply {
+//            icon = getDrawable(R.drawable.ic_search_black_24dp)?.apply {
+//                setTint(resources.getColor(android.R.color.white))
+//            }
+//            setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM)
+//        }
+
+        return true
     }
 }

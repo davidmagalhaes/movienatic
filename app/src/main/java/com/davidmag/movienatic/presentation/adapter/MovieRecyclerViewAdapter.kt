@@ -44,15 +44,14 @@ class MovieRecyclerViewAdapter(
 
         holder.titleTxt?.text = movie.title
 
-        movie.releaseDate?.let {
-            holder.releaseDateTxt?.text = it.format(
-                DateTimeFormatter.ofPattern(context.getString(R.string.format_date_words)))
-        }
-
         holder.itemView.setOnClickListener(holder)
     }
 
     override fun getItemCount(): Int {
         return movieList.size
+    }
+
+    override fun getItemId(position: Int): Long {
+        return movieList[position].id!!.toLong()
     }
 }

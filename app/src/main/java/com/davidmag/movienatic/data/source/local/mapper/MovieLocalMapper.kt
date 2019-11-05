@@ -33,8 +33,7 @@ object MovieLocalMapper : EntityDtoMapper<Movie, MovieDb>() {
 
         movie.id = it.id
         movie.backdropPath = it.backdropPath
-        movie.genres = GenreLocalMapper.toEntity(it.genres ?: listOf()).
-            toCollection(RealmList())
+        movie.genres = GenreLocalMapper.toEntity(it.genres ?: listOf())
         movie.overview = it.overview
         movie.posterPath = it.posterPath
         movie.releaseDate = LocalDate.parse(it.releaseDate, DateTimeFormatter.ISO_LOCAL_DATE)

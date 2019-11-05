@@ -8,6 +8,8 @@ import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
 import io.realm.Realm
+import io.realm.RealmConfiguration
+import io.realm.RealmMigration
 import java.util.*
 import javax.inject.Inject
 
@@ -30,6 +32,8 @@ class App : Application() {
 
     override fun onCreate() {
         Realm.init(this)
+        Realm.setDefaultConfiguration(RealmConfiguration.Builder().
+            deleteRealmIfMigrationNeeded().build())
 
         currentLocale.value = Locale.getDefault()
         currentLocale.observeForever {

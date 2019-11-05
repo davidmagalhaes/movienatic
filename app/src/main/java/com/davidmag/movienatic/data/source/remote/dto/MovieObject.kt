@@ -13,6 +13,10 @@ open class MovieObject : Serializable {
     var releaseDate : LocalDate? = null
     @SerializedName("genres")
     var genres : List<GenreObject>? = null
+
+    @SerializedName("genre_ids")
+    var genreIds : List<Int>? = null
+
     @SerializedName("backdrop_path")
     var backdropPath : String? = null
     @SerializedName("title")

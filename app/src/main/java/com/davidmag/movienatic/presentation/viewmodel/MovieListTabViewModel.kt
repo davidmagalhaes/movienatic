@@ -11,9 +11,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
 
 class MovieListTabViewModel @Inject constructor(
-    val getMoviesUseCase: GetMoviesUseCase,
-    val fetchMoviesUseCase: FetchMoviesUseCase,
-    val getImageConfigsUseCase: GetImageConfigsUseCase
+    private val getMoviesUseCase: GetMoviesUseCase,
+    private val fetchMoviesUseCase: FetchMoviesUseCase,
+    private val getImageConfigsUseCase: GetImageConfigsUseCase
 ) : ViewModel() {
 
     val movies = MediatorLiveData<List<Movie>>()

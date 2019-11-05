@@ -2,9 +2,11 @@ package com.davidmag.movienatic.data.source.local.dto
 
 import io.realm.RealmList
 import io.realm.RealmObject
+import io.realm.annotations.PrimaryKey
 import java.util.*
 
 open class ImageConfigsDb : RealmObject() {
+    @PrimaryKey
     var id : Int = 1
 
     var lastUpdate : String? = null

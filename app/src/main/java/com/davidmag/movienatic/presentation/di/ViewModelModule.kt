@@ -40,10 +40,12 @@ class ViewModelModule {
     @Provides
     fun provideMovieDetailsViewModel(
         fetchMovieDetailsByIdUseCase: FetchMovieDetailsByIdUseCase,
+        getImageConfigsUseCase: GetImageConfigsUseCase,
         getMoviesUseCase: GetMoviesUseCase
     ) : MovieDetailsViewModel {
         return MovieDetailsViewModel(
             fetchMovieDetailsByIdUseCase,
+            getImageConfigsUseCase,
             getMoviesUseCase
         )
     }

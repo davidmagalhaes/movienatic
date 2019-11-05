@@ -33,12 +33,6 @@ open class MovieListTabFragment : BaseFragment(), MovieClickListener {
 
         viewModel = initViewModel { viewModel }
 
-        viewModel.getMovies(arguments!!.getInt("genre_id"))
-        viewModel.getImageConfigs()
-
-        viewModel.updateMovieList(arguments!!.getInt("genre_id")).
-            observe(viewLifecycleOwner, Observer {})
-
         super.onAttach(context)
     }
 
@@ -48,6 +42,15 @@ open class MovieListTabFragment : BaseFragment(), MovieClickListener {
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.activity_movie_list, container, false)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        viewModel.updateMovieList(arguments!!.getInt("genre_id")).
+            observe(viewLifecycleOwner, Observer {})
+
+        viewModel.getMovies(arguments!!.getInt("genre_id"))
+        viewModel.getImageConfigs()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -71,7 +74,7 @@ open class MovieListTabFragment : BaseFragment(), MovieClickListener {
     override fun onMovieClick(v: View, pos: Int) {
         val intent = Intent(context, MovieDetailsActivity::class.java)
 
-        intent.putExtra("id", mAdapter.getItemId(pos))
+        intent.putExtra("id", mAdapter.getItemId(pos).toInt())
 
         startActivity(intent)
     }

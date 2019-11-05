@@ -25,10 +25,10 @@ class MovieRemoteDatasourceImpl(
             if(genreId != null) "$genreId" else "28, 18, 14, 878"))
     }
 
-    override fun find(id : String) : Maybe<Movie?> {
+    override fun find(id : Int) : Maybe<Movie?> {
         return Maybe.fromCallable {
             currentCall?.cancel()
-            val call = movieApi.findById(BuildConfig.API_KEY, id)
+            val call = movieApi.findById("$id", BuildConfig.API_KEY)
 
             currentCall = call
 

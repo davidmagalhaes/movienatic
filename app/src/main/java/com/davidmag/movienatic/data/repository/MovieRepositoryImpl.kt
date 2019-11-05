@@ -19,7 +19,7 @@ class MovieRepositoryImpl(
         return remoteDatasource.query(query).subscribeOn(Schedulers.io())
     }
 
-    override fun find(id: String): Maybe<*> {
+    override fun find(id: Int): Maybe<*> {
         return remoteDatasource.find(id).subscribeOn(Schedulers.io()).flatMap { movie ->
             localDatasource.patch(movie)
         }
@@ -32,7 +32,7 @@ class MovieRepositoryImpl(
             }
     }
 
-    override fun get(id : String?, genreId : Int?): Flowable<List<Movie>> {
+    override fun get(id : Int?, genreId : Int?): Flowable<List<Movie>> {
         return localDatasource.get(id, genreId)
     }
 }
