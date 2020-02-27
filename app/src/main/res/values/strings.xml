@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Movienatic</string>
+    <string name="format_day_month">dd \'de\' MMMM</string>
+    <string name="format_date_words">dd \'de\' MMMM \'de\' yyyy</string>
+    <string name="error_connection_timeout">Não foi possível conectar ao servidor: Timeout</string>
+    <string name="error_generic_explained">Ocorreu um erro: %s</string>
+    <string name="error_connection_generic">Erro ao conectar com o servidor. Verifique sua conexão com a internet.</string>
+    <string name="presentation_activity_movietabhost_firsttab">Ação</string>
+    <string name="presentation_activity_movietabhost_secondtab">Drama</string>
+    <string name="presentation_activity_movietabhost_thirdtab">Fantasia</string>
+    <string name="presentation_activity_movietabhost_fourthtab">Ficção</string>
+    <string name="presentation_activity_movietabhost_menu_search">Pessquisar</string>
+    <string name="search_hint">Pesquisar por filmes</string>
+</resources>
