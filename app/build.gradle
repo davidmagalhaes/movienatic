@@ -58,9 +58,9 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.1.0'
 
     //KOTLIN COROUTINES
-    def kotlinCoroutineVer = '1.1.1'
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinCoroutineVer"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinCoroutineVer"
+//    def kotlinCoroutineVer = '1.1.1'
+//    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinCoroutineVer"
+//    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinCoroutineVer"
 
     //RETROFIT
     def retrofitVer = '2.6.1'
@@ -101,6 +101,13 @@ dependencies {
     implementation "com.google.dagger:dagger-android-support:2.15"
     kapt "com.google.dagger:dagger-android-processor:2.15"
     kapt "com.google.dagger:dagger-compiler:2.15"
+
+//    //FLIPPER
+//    debugImplementation 'com.facebook.flipper:flipper:0.27.0'
+//    debugImplementation 'com.facebook.soloader:soloader:0.5.1'
+//    debugImplementation 'com.facebook.flipper:flipper-network-plugin:0.27.0'
+//
+//    releaseImplementation 'com.facebook.flipper:flipper-noop:0.27.0'
 
     //STETHO
     def stethoVer = '1.5.1'

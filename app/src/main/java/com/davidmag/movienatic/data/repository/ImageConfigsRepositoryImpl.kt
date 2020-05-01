@@ -13,7 +13,7 @@ class ImageConfigsRepositoryImpl(
     val imageConfigsRemoteDatasource: ImageConfigsRemoteDatasource
 ) : ImageConfigsRepository {
 
-    override fun fetch(): Maybe<*> {
+    override fun fetch(): Maybe<Any> {
         return imageConfigsRemoteDatasource.fetch().subscribeOn(Schedulers.io()).flatMap {
             imageConfigsLocalDatasource.cache(it)
         }

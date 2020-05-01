@@ -1,5 +1,6 @@
 package com.davidmag.movienatic.presentation.activity
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager
@@ -15,6 +16,7 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.view.ActionMode
 import androidx.appcompat.widget.SearchView
+import com.facebook.flipper.android.diagnostics.FlipperDiagnosticActivity
 import kotlinx.android.synthetic.main.activity_movie_tabhost.*
 
 
@@ -44,32 +46,37 @@ class MovieTabHostActivity : BaseActivity() {
         viewModel = initViewModel { viewModel }
 
         viewModel.updateImageConfigs().observe(this, Observer {})
-        viewModel.fetchGenres()
-
-        viewModel.genres.observe(this, Observer {
-            movieGenrePagerAdapter.mTabs = arrayListOf(
-                TabInfo(
-                    title = getString(R.string.presentation_activity_movietabhost_firsttab),
-                    fragment = MovieListTabFragment(),
-                    args  = Bundle().apply { putInt("genre_id", it[0].id!!)  }
-                ),
-                TabInfo(
-                    title = getString(R.string.presentation_activity_movietabhost_secondtab),
-                    fragment = MovieListTabFragment(),
-                    args  = Bundle().apply { putInt("genre_id", it[1].id!!)  }
-                ),
-                TabInfo(
-                    title = getString(R.string.presentation_activity_movietabhost_thirdtab),
-                    fragment = MovieListTabFragment(),
-                    args  = Bundle().apply { putInt("genre_id", it[2].id!!)  }
-                ),
-                TabInfo(
-                    title = getString(R.string.presentation_activity_movietabhost_fourthtab),
-                    fragment = MovieListTabFragment(),
-                    args  = Bundle().apply { putInt("genre_id", it[3].id!!)  }
+        viewModel.getGenres().observe(this, Observer {
+            if(it.hasReturnedData()){
+                movieGenrePagerAdapter.mTabs = arrayListOf(
+                    TabInfo(
+                        title = getString(R.string.presentation_activity_movietabhost_firsttab),
+                        fragment = MovieListTabFragment(),
+                        args  = Bundle().apply { putInt("genre_id", it.data!![0].id!!)  }
+                    ),
+                    TabInfo(
+                        title = getString(R.string.presentation_activity_movietabhost_secondtab),
+                        fragment = MovieListTabFragment(),
+                        args  = Bundle().apply { putInt("genre_id", it.data!![1].id!!)  }
+                    ),
+                    TabInfo(
+                        title = getString(R.string.presentation_activity_movietabhost_thirdtab),
+                        fragment = MovieListTabFragment(),
+                        args  = Bundle().apply { putInt("genre_id", it.data!![2].id!!)  }
+                    ),
+                    TabInfo(
+                        title = getString(R.string.presentation_activity_movietabhost_fourthtab),
+                        fragment = MovieListTabFragment(),
+                        args  = Bundle().apply { putInt("genre_id", it.data!![3].id!!)  }
+                    )
                 )
-            )
+            }
+            else {
+                it.error?.printStackTrace()
+            }
         })
+
+        startActivity(Intent(applicationContext, FlipperDiagnosticActivity::class.java))
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

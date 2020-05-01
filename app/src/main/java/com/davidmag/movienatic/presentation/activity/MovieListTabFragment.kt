@@ -60,14 +60,22 @@ open class MovieListTabFragment : BaseFragment(), MovieClickListener {
         recycler_view.adapter = mAdapter
 
         viewModel.imageConfigs.observe(viewLifecycleOwner, Observer {
-            if(it.isNotEmpty()){
-                mAdapter.imageConfigs = it[0]
+            if(it.isSuccessful()){
+                mAdapter.imageConfigs = it.data
                 mAdapter.notifyDataSetChanged()
+            }
+            else if(it.hasFailed()){
+                it.error?.printStackTrace()
             }
         })
 
         viewModel.movies.observe(viewLifecycleOwner, Observer {
-            mAdapter.movieList = it
+            if(it.isSuccessful()){
+                mAdapter.movieList = it.data!!
+            }
+            else {
+                it.error?.printStackTrace()
+            }
         })
     }
 

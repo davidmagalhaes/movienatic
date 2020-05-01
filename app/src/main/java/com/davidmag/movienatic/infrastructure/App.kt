@@ -1,31 +1,24 @@
 package com.davidmag.movienatic.infrastructure
 
-import android.app.Activity
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.davidmag.movienatic.infrastructure.di.DaggerApplicationComponent
-import dagger.android.AndroidInjector
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasActivityInjector
+import io.reactivex.plugins.RxJavaPlugins
 import io.realm.Realm
 import io.realm.RealmConfiguration
-import io.realm.RealmMigration
 import java.util.*
-import javax.inject.Inject
 
 class App : Application() {
 
-
     companion object  {
+        val TAG = App::class.java.simpleName
+
         lateinit var instance : App
             private set
 
         val currentLocale = MutableLiveData<Locale>()
     }
-
-    @Inject
-    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Activity>
-
     init {
         instance = this
     }
@@ -38,6 +31,13 @@ class App : Application() {
         currentLocale.value = Locale.getDefault()
         currentLocale.observeForever {
             Locale.setDefault(it)
+        }
+
+        DaggerApplicationComponent.create().inject(this)
+
+        RxJavaPlugins.setErrorHandler {
+            Log.i(TAG, "RxJava error handled on Global Handler!")
+            it.printStackTrace()
         }
 
         super.onCreate()

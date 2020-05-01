@@ -6,7 +6,7 @@ import io.reactivex.Maybe
 class UpdateImageConfigsUseCase(
     val imageConfigsRepository: ImageConfigsRepository
 ) {
-    fun execute() : Maybe<*> {
+    fun execute() : Maybe<Any> {
         return imageConfigsRepository.fetch()
     }
 }

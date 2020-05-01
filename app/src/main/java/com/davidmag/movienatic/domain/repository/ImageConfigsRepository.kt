@@ -5,6 +5,6 @@ import io.reactivex.Flowable
 import io.reactivex.Maybe
 
 interface ImageConfigsRepository {
-    fun fetch() : Maybe<*>
+    fun fetch() : Maybe<Any>
     fun get() : Flowable<List<ImageConfigs>>
 }

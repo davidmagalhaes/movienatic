@@ -19,13 +19,13 @@ class MovieRepositoryImpl(
         return remoteDatasource.query(query).subscribeOn(Schedulers.io())
     }
 
-    override fun find(id: Int): Maybe<*> {
+    override fun find(id: Int): Maybe<Any> {
         return remoteDatasource.find(id).subscribeOn(Schedulers.io()).flatMap { movie ->
             localDatasource.patch(movie)
         }
     }
 
-    override fun fetch(genreId : Int?): Maybe<*> {
+    override fun fetch(genreId : Int?): Maybe<Any> {
         return remoteDatasource.fetch(genreId).subscribeOn(Schedulers.io()).
             flatMap {
                 localDatasource.cache(it).subscribeOn(Schedulers.single())

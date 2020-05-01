@@ -1,16 +1,15 @@
 package com.davidmag.movienatic.infrastructure.di
 
-import android.app.Application
-import dagger.BindsInstance
+import com.davidmag.movienatic.infrastructure.App
 import dagger.Component
-import dagger.android.AndroidInjectionModule
-import dagger.android.support.AndroidSupportInjectionModule
 import javax.inject.Singleton
 
 @Singleton
 @Component(modules = [
-    AndroidInjectionModule::class,
-    AndroidSupportInjectionModule::class
+    NetworkModule::class,
+    DatasourceModule::class,
+    RepositoryModule::class,
+    UseCaseModule::class
 ])
 interface ApplicationComponent {
 
@@ -19,10 +18,10 @@ interface ApplicationComponent {
 
         fun build(): ApplicationComponent
 
-        @BindsInstance
-        fun applicationBind(application: Application): Builder
+//        @BindsInstance
+//        fun applicationBind(application: Application): Builder
 
     }
 
-    fun inject(application : Application)
+    fun inject(application : App)
 }

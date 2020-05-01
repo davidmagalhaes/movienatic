@@ -1,11 +1,11 @@
 package com.davidmag.movienatic.domain.usecase
 
 import com.davidmag.movienatic.domain.model.Genre
-import io.reactivex.Maybe
+import io.reactivex.Flowable
 
 class GetGenresUseCase {
-    fun execute() : Maybe<List<Genre>> {
-        return Maybe.just(arrayListOf(
+    fun execute() : Flowable<List<Genre>> {
+        return Flowable.just(arrayListOf(
             Genre(id = 28, name = "Action"),
             Genre(id = 18, name = "Drama"),
             Genre(id = 14, name = "Fantasy"),

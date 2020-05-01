@@ -8,6 +8,8 @@ import com.davidmag.movienatic.AppGlideModule
 import com.davidmag.movienatic.BuildConfig
 import com.davidmag.movienatic.data.source.remote.api.ConfigurationsApi
 import com.davidmag.movienatic.data.source.remote.api.MovieApi
+import com.facebook.flipper.plugins.network.FlipperOkhttpInterceptor
+import com.facebook.flipper.plugins.network.NetworkFlipperPlugin
 import com.facebook.stetho.Stetho
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.google.gson.GsonBuilder
@@ -26,6 +28,10 @@ import javax.inject.Singleton
 @Module
 class NetworkModule {
 
+    val networkFlipperPlugin by lazy {
+        NetworkFlipperPlugin()
+    }
+
     val okHttpClient by lazy {
         val okHttp3ClientBuilder = OkHttpClient.Builder()
             .connectionPool(ConnectionPool(10, 1, TimeUnit.MINUTES))
@@ -43,6 +49,7 @@ class NetworkModule {
             )
 
             okHttp3ClientBuilder.addNetworkInterceptor(StethoInterceptor())
+            okHttp3ClientBuilder.addNetworkInterceptor(FlipperOkhttpInterceptor(networkFlipperPlugin))
         }
 
         val client = okHttp3ClientBuilder.build()
@@ -67,6 +74,11 @@ class NetworkModule {
             client(okHttpClient).
             addConverterFactory(GsonConverterFactory.create(gson)).
             build()
+    }
+
+    @Provides
+    fun provideNetworkFlipperPlugin() : NetworkFlipperPlugin {
+        return networkFlipperPlugin
     }
 
     @Singleton

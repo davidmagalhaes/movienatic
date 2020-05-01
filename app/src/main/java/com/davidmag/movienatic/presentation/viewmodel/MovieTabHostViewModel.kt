@@ -8,11 +8,8 @@ import com.davidmag.movienatic.domain.model.Genre
 import com.davidmag.movienatic.domain.model.ImageConfigs
 import com.davidmag.movienatic.domain.model.Movie
 import com.davidmag.movienatic.domain.usecase.*
-import io.reactivex.Maybe
-import io.reactivex.Scheduler
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
-import javax.inject.Inject
+import com.davidmag.movienatic.presentation.common.ResultWrapper
+import com.davidmag.movienatic.presentation.common.Result
 
 class MovieTabHostViewModel(
     private val getImageConfigsUseCase: GetImageConfigsUseCase,
@@ -21,48 +18,28 @@ class MovieTabHostViewModel(
     private val getGenresUseCase: GetGenresUseCase
 ) : ViewModel() {
 
-    val imageConfigs = MediatorLiveData<List<ImageConfigs>>()
-    val genres = MediatorLiveData<List<Genre>>()
+    val imageConfigs = MediatorLiveData<Result<ImageConfigs>>()
+    val genres = MediatorLiveData<Result<List<Genre>>>()
 
-    fun updateImageConfigs() : LiveData<*> {
-        val source =  LiveDataReactiveStreams.fromPublisher(
-            updateImageConfigsUseCase.execute().toFlowable().
-                observeOn(AndroidSchedulers.mainThread())
-        )
-
-        val mediator = MediatorLiveData<Any>()
-
-        mediator.addSource(source){
-            mediator.removeSource(source)
-        }
-
-        return mediator
+    fun updateImageConfigs() : LiveData<Result<Any>> {
+        return ResultWrapper.wrap(updateImageConfigsUseCase.execute())
     }
 
-    fun searchMovies(query : String) : LiveData<List<Movie>> {
-        return LiveDataReactiveStreams.fromPublisher(
-            searchMoviesUseCase.execute(query).toFlowable().
-                observeOn(AndroidSchedulers.mainThread())
+    fun searchMovies(query : String) : LiveData<Result<List<Movie>>> {
+        return ResultWrapper.wrap(searchMoviesUseCase.execute(query))
+    }
+
+    fun getGenres() : LiveData<Result<List<Genre>>> {
+        return ResultWrapper.wrap(
+            getGenresUseCase.execute(),
+            genres
         )
     }
 
-    fun fetchGenres() {
-        val source = LiveDataReactiveStreams.fromPublisher(getGenresUseCase.execute().
-            toFlowable().
-            observeOn(AndroidSchedulers.mainThread()))
-
-        genres.addSource(source){
-            genres.removeSource(source)
-            genres.postValue(it)
-        }
-    }
-
-    fun getImageConfigs() {
-        val source = LiveDataReactiveStreams.fromPublisher(getImageConfigsUseCase.execute().
-            observeOn(AndroidSchedulers.mainThread()))
-
-        imageConfigs.addSource(source){
-            imageConfigs.postValue(it)
-        }
+    fun getImageConfigs() : LiveData<Result<ImageConfigs>> {
+        return ResultWrapper.wrapFirst(
+            getImageConfigsUseCase.execute(),
+            imageConfigs
+        )
     }
 }
