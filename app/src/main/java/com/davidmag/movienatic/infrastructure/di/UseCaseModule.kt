@@ -1,5 +1,6 @@
 package com.davidmag.movienatic.infrastructure.di
 
+import com.davidmag.movienatic.domain.repository.GenreRepository
 import com.davidmag.movienatic.domain.repository.ImageConfigsRepository
 import com.davidmag.movienatic.domain.repository.MovieRepository
 import com.davidmag.movienatic.domain.usecase.*
@@ -20,9 +21,10 @@ class UseCaseModule {
     @Singleton
     @Provides
     fun provideFetchMoviesUseCase(
+        genreRepository: GenreRepository,
         movieRepository: MovieRepository
     ) : FetchMoviesUseCase {
-        return FetchMoviesUseCase(movieRepository)
+        return FetchMoviesUseCase(genreRepository, movieRepository)
     }
 
     @Singleton
@@ -59,7 +61,9 @@ class UseCaseModule {
 
     @Singleton
     @Provides
-    fun provideGetGenresUseCase() : GetGenresUseCase {
-        return GetGenresUseCase()
+    fun provideGetGenresUseCase(
+        genreRepository: GenreRepository
+    ) : GetGenresUseCase {
+        return GetGenresUseCase(genreRepository)
     }
 }

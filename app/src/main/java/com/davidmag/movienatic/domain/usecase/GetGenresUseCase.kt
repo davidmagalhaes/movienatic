@@ -1,15 +1,15 @@
 package com.davidmag.movienatic.domain.usecase
 
 import com.davidmag.movienatic.domain.model.Genre
+import com.davidmag.movienatic.domain.repository.GenreRepository
 import io.reactivex.Flowable
 
-class GetGenresUseCase {
+class GetGenresUseCase(
+    val genreRepository: GenreRepository
+) {
     fun execute() : Flowable<List<Genre>> {
-        return Flowable.just(arrayListOf(
-            Genre(id = 28, name = "Action"),
-            Genre(id = 18, name = "Drama"),
-            Genre(id = 14, name = "Fantasy"),
-            Genre(id = 878, name = "Science Fiction")
-        ))
+        return genreRepository.fetch().toFlowable().flatMap {
+            genreRepository.get()
+        }
     }
 }

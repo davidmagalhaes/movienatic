@@ -3,7 +3,7 @@ package com.davidmag.movienatic.domain.model
 import org.threeten.bp.OffsetDateTime
 
 data class ImageConfigs (
-    var id : Int = 1,
+    var id : Long = 1,
 
     var lastUpdate : OffsetDateTime = OffsetDateTime.now(),
 

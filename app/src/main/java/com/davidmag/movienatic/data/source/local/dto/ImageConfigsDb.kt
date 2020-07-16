@@ -1,13 +1,12 @@
 package com.davidmag.movienatic.data.source.local.dto
 
-import io.realm.RealmList
-import io.realm.RealmObject
-import io.realm.annotations.PrimaryKey
-import java.util.*
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-open class ImageConfigsDb : RealmObject() {
-    @PrimaryKey
-    var id : Int = 1
+@Entity
+open class ImageConfigsDb {
+    @PrimaryKey(autoGenerate = true)
+    var id : Long = 1
 
     var lastUpdate : String? = null
 
@@ -16,9 +15,9 @@ open class ImageConfigsDb : RealmObject() {
     //@SerializedName("secure_base_url")
     var secureBaseUrl : String? = null
     //@SerializedName("backdrop_sizes")
-    var backdropSizes : RealmList<String>? = null
+    var backdropSizes : List<String>? = null
     //@SerializedName("logo_sizes")
-    var logoSizes : RealmList<String>? = null
+    var logoSizes : List<String>? = null
     //@SerializedName("poster_sizes")
-    var posterSizes : RealmList<String>? = null
+    var posterSizes : List<String>? = null
 }

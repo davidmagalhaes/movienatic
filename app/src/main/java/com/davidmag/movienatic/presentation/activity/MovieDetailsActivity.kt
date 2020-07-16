@@ -24,9 +24,11 @@ class MovieDetailsActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        DaggerPresentationComponent.builder().
-            application(App.instance).
-            build().inject(this)
+        DaggerPresentationComponent
+            .builder()
+            .applicationComponent(App.applicationComponent)
+            .build()
+            .inject(this)
 
         setContentView(R.layout.activity_movie_details)
 
@@ -34,7 +36,7 @@ class MovieDetailsActivity : BaseActivity() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        val movieId = intent.getIntExtra("id", -1)
+        val movieId = intent.getLongExtra("id", -1)
 
         viewModel = initViewModel { viewModel }
 

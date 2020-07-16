@@ -16,7 +16,6 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.view.ActionMode
 import androidx.appcompat.widget.SearchView
-import com.facebook.flipper.android.diagnostics.FlipperDiagnosticActivity
 import kotlinx.android.synthetic.main.activity_movie_tabhost.*
 
 
@@ -24,14 +23,14 @@ class MovieTabHostActivity : BaseActivity() {
 
     @Inject lateinit var viewModel : MovieTabHostViewModel
 
-    private var searchItem : MenuItem? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        DaggerPresentationComponent.builder().
-            application(App.instance).
-            build().inject(this)
+        DaggerPresentationComponent
+            .builder()
+            .applicationComponent(App.applicationComponent)
+            .build()
+            .inject(this)
 
         setContentView(R.layout.activity_movie_tabhost)
 
@@ -52,22 +51,22 @@ class MovieTabHostActivity : BaseActivity() {
                     TabInfo(
                         title = getString(R.string.presentation_activity_movietabhost_firsttab),
                         fragment = MovieListTabFragment(),
-                        args  = Bundle().apply { putInt("genre_id", it.data!![0].id!!)  }
+                        args  = Bundle().apply { putLong("genre_id", it.data!![0].id!!)  }
                     ),
                     TabInfo(
                         title = getString(R.string.presentation_activity_movietabhost_secondtab),
                         fragment = MovieListTabFragment(),
-                        args  = Bundle().apply { putInt("genre_id", it.data!![1].id!!)  }
+                        args  = Bundle().apply { putLong("genre_id", it.data!![1].id!!)  }
                     ),
                     TabInfo(
                         title = getString(R.string.presentation_activity_movietabhost_thirdtab),
                         fragment = MovieListTabFragment(),
-                        args  = Bundle().apply { putInt("genre_id", it.data!![2].id!!)  }
+                        args  = Bundle().apply { putLong("genre_id", it.data!![2].id!!)  }
                     ),
                     TabInfo(
                         title = getString(R.string.presentation_activity_movietabhost_fourthtab),
                         fragment = MovieListTabFragment(),
-                        args  = Bundle().apply { putInt("genre_id", it.data!![3].id!!)  }
+                        args  = Bundle().apply { putLong("genre_id", it.data!![3].id!!)  }
                     )
                 )
             }
@@ -75,8 +74,6 @@ class MovieTabHostActivity : BaseActivity() {
                 it.error?.printStackTrace()
             }
         })
-
-        startActivity(Intent(applicationContext, FlipperDiagnosticActivity::class.java))
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

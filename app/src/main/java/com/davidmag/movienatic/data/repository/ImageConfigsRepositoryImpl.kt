@@ -16,10 +16,12 @@ class ImageConfigsRepositoryImpl(
     override fun fetch(): Maybe<Any> {
         return imageConfigsRemoteDatasource.fetch().subscribeOn(Schedulers.io()).flatMap {
             imageConfigsLocalDatasource.cache(it)
+                .subscribeOn(Schedulers.single())
         }
     }
 
     override fun get(): Flowable<List<ImageConfigs>> {
         return imageConfigsLocalDatasource.get()
+            .subscribeOn(Schedulers.single())
     }
 }

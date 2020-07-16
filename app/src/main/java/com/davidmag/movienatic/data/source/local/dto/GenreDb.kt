@@ -1,14 +1,13 @@
 package com.davidmag.movienatic.data.source.local.dto
 
-import io.realm.RealmObject
-import io.realm.annotations.LinkingObjects
-import io.realm.annotations.PrimaryKey
-import io.realm.RealmResults
-import io.realm.RealmObject.asChangesetObservable
-import io.realm.RealmObject.asFlowable
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-open class GenreDb : RealmObject() {
-    @PrimaryKey
-    var id : Int? = null
+@Entity
+open class GenreDb {
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "_genre_id")
+    var id : Long? = null
     var name : String? = null
 }

@@ -6,7 +6,7 @@ import java.io.Serializable
 
 open class MovieObject : Serializable {
     @SerializedName("id")
-    var id : Int? = null
+    var id : Long? = null
     @SerializedName("poster_path")
     var posterPath : String? = null
     @SerializedName("release_date")
@@ -15,7 +15,7 @@ open class MovieObject : Serializable {
     var genres : List<GenreObject>? = null
 
     @SerializedName("genre_ids")
-    var genreIds : List<Int>? = null
+    var genreIds : List<Long>? = null
 
     @SerializedName("backdrop_path")
     var backdropPath : String? = null

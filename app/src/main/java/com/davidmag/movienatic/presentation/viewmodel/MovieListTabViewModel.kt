@@ -18,7 +18,7 @@ class MovieListTabViewModel (
     val movies = MediatorLiveData<Result<List<Movie>>>()
     val imageConfigs = MediatorLiveData<Result<ImageConfigs>>()
 
-    fun getMovies(genreId : Int) : LiveData<Result<List<Movie>>>  {
+    fun getMovies(genreId : Long) : LiveData<Result<List<Movie>>>  {
         return ResultWrapper.wrap(
             getMoviesUseCase.execute(genreId = genreId),
             movies
@@ -32,7 +32,7 @@ class MovieListTabViewModel (
         )
     }
 
-    fun updateMovieList(genreId : Int) : LiveData<*> {
+    fun updateMovieList(genreId : Long) : LiveData<*> {
         return ResultWrapper.wrap(fetchMoviesUseCase.execute(genreId))
     }
 }

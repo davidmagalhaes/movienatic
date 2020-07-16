@@ -5,5 +5,4 @@ import io.reactivex.Maybe
 
 interface ImageConfigsRemoteDatasource {
     fun fetch() : Maybe<ImageConfigs>
-    fun cancel()
 }

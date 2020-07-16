@@ -3,7 +3,7 @@ package com.davidmag.movienatic.domain.model
 import org.threeten.bp.LocalDate
 
 data class Movie  (
-    var id : Int? = null,
+    var id : Long? = null,
     var posterPath : String? = null,
     var releaseDate : LocalDate? = null,
     var genres : List<Genre>? = null,

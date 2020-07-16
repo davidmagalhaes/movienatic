@@ -20,7 +20,7 @@ class MovieDetailsViewModel (
     val movie = MediatorLiveData<Result<Movie>>()
     val imageConfigs = MediatorLiveData<Result<ImageConfigs>>()
 
-    fun getMovies(id: Int) : LiveData<Result<Movie>> {
+    fun getMovies(id: Long) : LiveData<Result<Movie>> {
         return ResultWrapper.wrapFirst(
             getMoviesUseCase.execute(id = id),
             movie
@@ -34,7 +34,7 @@ class MovieDetailsViewModel (
         )
     }
 
-    fun init(id : Int) : LiveData<*> {
+    fun init(id : Long) : LiveData<*> {
         return ResultWrapper.wrap(fetchMovieDetailsByIdUseCase.execute(id))
     }
 }

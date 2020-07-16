@@ -28,8 +28,12 @@ open class MovieListTabFragment : BaseFragment(), MovieClickListener {
     }
 
     override fun onAttach(context: Context) {
-        DaggerPresentationComponent.builder().
-            application(App.instance).build().inject(this)
+        DaggerPresentationComponent
+            .builder()
+            .applicationComponent(App.applicationComponent)
+            .build()
+            .inject(this)
+
 
         viewModel = initViewModel { viewModel }
 
@@ -46,10 +50,10 @@ open class MovieListTabFragment : BaseFragment(), MovieClickListener {
 
     override fun onStart() {
         super.onStart()
-        viewModel.updateMovieList(arguments!!.getInt("genre_id")).
+        viewModel.updateMovieList(arguments!!.getLong("genre_id")).
             observe(viewLifecycleOwner, Observer {})
 
-        viewModel.getMovies(arguments!!.getInt("genre_id"))
+        viewModel.getMovies(arguments!!.getLong("genre_id"))
         viewModel.getImageConfigs()
     }
 

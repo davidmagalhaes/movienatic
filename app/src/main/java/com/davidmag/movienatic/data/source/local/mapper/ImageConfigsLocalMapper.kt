@@ -3,7 +3,6 @@ package com.davidmag.movienatic.data.source.local.mapper
 import com.davidmag.movienatic.data.source.common.EntityDtoMapper
 import com.davidmag.movienatic.data.source.local.dto.ImageConfigsDb
 import com.davidmag.movienatic.domain.model.ImageConfigs
-import io.realm.RealmList
 import org.threeten.bp.OffsetDateTime
 import org.threeten.bp.format.DateTimeFormatter
 
@@ -13,11 +12,11 @@ object ImageConfigsLocalMapper : EntityDtoMapper<ImageConfigs, ImageConfigsDb>()
         val dto = ImageConfigsDb()
 
         dto.id = it.id
-        dto.backdropSizes = it.backdropSizes?.toCollection(RealmList())
+        dto.backdropSizes = it.backdropSizes
         dto.baseUrl = it.baseUrl
         dto.lastUpdate = it.lastUpdate.format(DateTimeFormatter.ISO_ZONED_DATE_TIME)
-        dto.logoSizes = it.logoSizes?.toCollection(RealmList())
-        dto.posterSizes = it.posterSizes?.toCollection(RealmList())
+        dto.logoSizes = it.logoSizes
+        dto.posterSizes = it.posterSizes
         dto.secureBaseUrl = it.secureBaseUrl
 
         dto

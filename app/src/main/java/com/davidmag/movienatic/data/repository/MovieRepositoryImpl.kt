@@ -19,20 +19,25 @@ class MovieRepositoryImpl(
         return remoteDatasource.query(query).subscribeOn(Schedulers.io())
     }
 
-    override fun find(id: Int): Maybe<Any> {
+    override fun find(id: Long): Maybe<Any> {
         return remoteDatasource.find(id).subscribeOn(Schedulers.io()).flatMap { movie ->
             localDatasource.patch(movie)
+                .observeOn(Schedulers.single())
         }
     }
 
-    override fun fetch(genreId : Int?): Maybe<Any> {
+    override fun fetch(genreId : Long?): Maybe<Any> {
         return remoteDatasource.fetch(genreId).subscribeOn(Schedulers.io()).
             flatMap {
                 localDatasource.cache(it).subscribeOn(Schedulers.single())
+                    .observeOn(Schedulers.single())
             }
     }
 
-    override fun get(id : Int?, genreId : Int?): Flowable<List<Movie>> {
-        return localDatasource.get(id, genreId)
+    override fun get(id : Long?, genreId : Long?): Flowable<List<Movie>> {
+        return genreId?.let {
+            localDatasource.getByGenre(it)
+                .observeOn(Schedulers.single())
+        } ?: localDatasource.get(id)
     }
 }

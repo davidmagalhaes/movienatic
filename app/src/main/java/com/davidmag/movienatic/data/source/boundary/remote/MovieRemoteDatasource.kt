@@ -5,7 +5,6 @@ import io.reactivex.Maybe
 
 interface MovieRemoteDatasource {
     fun query(query : String) : Maybe<List<Movie>>
-    fun fetch(genreId : Int? = null) : Maybe<List<Movie>>
-    fun find(id : Int) : Maybe<Movie?>
-    fun cancel()
+    fun fetch(genreId : Long? = null) : Maybe<List<Movie>>
+    fun find(id : Long) : Maybe<Movie?>
 }
