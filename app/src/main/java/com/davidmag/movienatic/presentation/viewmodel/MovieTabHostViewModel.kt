@@ -10,10 +10,12 @@ import com.davidmag.movienatic.domain.model.Movie
 import com.davidmag.movienatic.domain.usecase.*
 import com.davidmag.movienatic.presentation.common.ResultWrapper
 import com.davidmag.movienatic.presentation.common.Result
+import io.reactivex.Maybe
 
 class MovieTabHostViewModel(
     private val getImageConfigsUseCase: GetImageConfigsUseCase,
     private val searchMoviesUseCase: SearchMoviesUseCase,
+    private val fetchMoviesUseCase: FetchMoviesUseCase,
     private val updateImageConfigsUseCase: UpdateImageConfigsUseCase,
     private val getGenresUseCase: GetGenresUseCase
 ) : ViewModel() {
@@ -41,5 +43,17 @@ class MovieTabHostViewModel(
             getImageConfigsUseCase.execute(),
             imageConfigs
         )
+    }
+
+    fun updateMovieList(vararg genreId : Long) : LiveData<*> {
+        val result = Maybe.just(Any())
+
+        genreId.forEach { eachId ->
+            result.flatMap {
+                fetchMoviesUseCase.execute(eachId)
+            }
+        }
+
+        return ResultWrapper.wrap(result)
     }
 }

@@ -16,19 +16,23 @@ class MovieRepositoryImpl(
     private val TAG = MovieRepositoryImpl::class.java.name
 
     override fun search(query: String): Maybe<List<Movie>> {
-        return remoteDatasource.query(query).subscribeOn(Schedulers.io())
+        return remoteDatasource.query(query)
+            .subscribeOn(Schedulers.io())
     }
 
     override fun find(id: Long): Maybe<Any> {
-        return remoteDatasource.find(id).subscribeOn(Schedulers.io()).flatMap { movie ->
-            localDatasource.patch(movie)
-                .observeOn(Schedulers.single())
-        }
+        return remoteDatasource.find(id)
+            .subscribeOn(Schedulers.io())
+            .flatMap { movie ->
+                localDatasource.patch(movie)
+                    .observeOn(Schedulers.single())
+            }
     }
 
     override fun fetch(genreId : Long?): Maybe<Any> {
-        return remoteDatasource.fetch(genreId).subscribeOn(Schedulers.io()).
-            flatMap {
+        return remoteDatasource.fetch(genreId)
+            .subscribeOn(Schedulers.io())
+            .flatMap {
                 localDatasource.cache(it).subscribeOn(Schedulers.single())
                     .observeOn(Schedulers.single())
             }

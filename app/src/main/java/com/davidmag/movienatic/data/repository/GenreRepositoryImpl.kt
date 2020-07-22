@@ -15,7 +15,6 @@ class GenreRepositoryImpl(
     override fun fetch(): Maybe<Any> {
         return genreRemoteDatasource.fetch()
             .subscribeOn(Schedulers.io())
-            .firstElement()
             .flatMap {
                 genreLocalDatasource.cache(it)
                     .subscribeOn(Schedulers.single())

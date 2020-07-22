@@ -50,9 +50,6 @@ open class MovieListTabFragment : BaseFragment(), MovieClickListener {
 
     override fun onStart() {
         super.onStart()
-        viewModel.updateMovieList(arguments!!.getLong("genre_id")).
-            observe(viewLifecycleOwner, Observer {})
-
         viewModel.getMovies(arguments!!.getLong("genre_id"))
         viewModel.getImageConfigs()
     }

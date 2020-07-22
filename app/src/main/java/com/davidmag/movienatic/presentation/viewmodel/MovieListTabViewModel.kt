@@ -11,7 +11,6 @@ import com.davidmag.movienatic.presentation.common.Result
 
 class MovieListTabViewModel (
     private val getMoviesUseCase: GetMoviesUseCase,
-    private val fetchMoviesUseCase: FetchMoviesUseCase,
     private val getImageConfigsUseCase: GetImageConfigsUseCase
 ) : ViewModel() {
 
@@ -30,9 +29,5 @@ class MovieListTabViewModel (
             getImageConfigsUseCase.execute(),
             imageConfigs
         )
-    }
-
-    fun updateMovieList(genreId : Long) : LiveData<*> {
-        return ResultWrapper.wrap(fetchMoviesUseCase.execute(genreId))
     }
 }

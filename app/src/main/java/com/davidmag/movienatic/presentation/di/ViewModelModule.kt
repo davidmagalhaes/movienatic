@@ -13,12 +13,14 @@ class ViewModelModule {
     fun provideMovieTabHostViewModel(
         getImageConfigsUseCase: GetImageConfigsUseCase,
         searchMoviesUseCase: SearchMoviesUseCase,
+        fetchMoviesUseCase: FetchMoviesUseCase,
         updateImageConfigsUseCase: UpdateImageConfigsUseCase,
         getGenresUseCase: GetGenresUseCase
     ) : MovieTabHostViewModel {
         return MovieTabHostViewModel(
             getImageConfigsUseCase,
             searchMoviesUseCase,
+            fetchMoviesUseCase,
             updateImageConfigsUseCase,
             getGenresUseCase
         )
@@ -27,12 +29,10 @@ class ViewModelModule {
     @Provides
     fun provideMovieListTabViewModel(
         getMoviesUseCase: GetMoviesUseCase,
-        fetchMoviesUseCase: FetchMoviesUseCase,
         getImageConfigsUseCase: GetImageConfigsUseCase
     ) : MovieListTabViewModel {
         return MovieListTabViewModel(
             getMoviesUseCase,
-            fetchMoviesUseCase,
             getImageConfigsUseCase
         )
     }

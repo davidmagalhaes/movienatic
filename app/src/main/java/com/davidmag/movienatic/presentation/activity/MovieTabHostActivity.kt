@@ -1,14 +1,11 @@
 package com.davidmag.movienatic.presentation.activity
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager
 import com.davidmag.movienatic.R
-import com.davidmag.movienatic.infrastructure.App
 import com.davidmag.movienatic.presentation.adapter.MovieGenrePagerAdapter
 import com.davidmag.movienatic.presentation.adapter.TabInfo
-import com.davidmag.movienatic.presentation.di.DaggerPresentationComponent
 import com.davidmag.movienatic.presentation.viewmodel.MovieTabHostViewModel
 import com.google.android.material.tabs.TabLayout
 import javax.inject.Inject
@@ -26,11 +23,7 @@ class MovieTabHostActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        DaggerPresentationComponent
-            .builder()
-            .applicationComponent(App.applicationComponent)
-            .build()
-            .inject(this)
+        presentationComponent.inject(this)
 
         setContentView(R.layout.activity_movie_tabhost)
 
@@ -47,6 +40,14 @@ class MovieTabHostActivity : BaseActivity() {
         viewModel.updateImageConfigs().observe(this, Observer {})
         viewModel.getGenres().observe(this, Observer {
             if(it.hasReturnedData()){
+
+                viewModel.updateMovieList(
+                    it.data!![0].id!!,
+                    it.data!![1].id!!,
+                    it.data!![2].id!!,
+                    it.data!![3].id!!
+                ).observe(this, Observer {})
+
                 movieGenrePagerAdapter.mTabs = arrayListOf(
                     TabInfo(
                         title = getString(R.string.presentation_activity_movietabhost_firsttab),
