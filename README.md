@@ -20,7 +20,7 @@ A aplicação pode ser executada com facilidade apenas executando __git clone__ 
  * LiveData
  * Retrofit
  * Kotlin
- * Realm
+ * Room
  * Dagger2
  * Stetho 
 
