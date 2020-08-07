@@ -6,7 +6,7 @@ import io.reactivex.Maybe
 class FetchMovieDetailsByIdUseCase (
     val movieRepository: MovieRepository
 ) {
-    fun execute(id : Long) : Maybe<*> {
+    fun execute(id : Long) : Maybe<Any> {
         return movieRepository.find(id)
     }
 }

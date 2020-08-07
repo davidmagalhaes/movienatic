@@ -1,4 +1,4 @@
-package com.davidmag.movienatic.presentation.activity
+package com.davidmag.movienatic.presentation.common
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
@@ -24,17 +24,5 @@ abstract class BaseActivity : AppCompatActivity(){
         layoutInflater.inflate(layoutResID, frameLayout, true)
 
         super.setContentView(constraintLayout)
-    }
-
-    inline fun <reified T: ViewModel> initViewModel(crossinline factory: () -> T): T = T::class.java.let { clazz ->
-        ViewModelProvider(this, object: ViewModelProvider.Factory {
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                if(modelClass == clazz) {
-                    @Suppress("UNCHECKED_CAST")
-                    return factory() as T
-                }
-                throw IllegalArgumentException("Unexpected argument: $modelClass")
-            }
-        }).get(clazz)
     }
 }

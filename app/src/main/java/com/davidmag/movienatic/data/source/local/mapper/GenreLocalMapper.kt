@@ -15,11 +15,9 @@ object GenreLocalMapper : EntityDtoMapper<Genre, GenreDb>() {
     }
 
     override val toEntityMapper: (GenreDb) -> Genre = {
-        val entity = Genre()
-
-        entity.id = it.id
-        entity.name = it.name
-
-        entity
+        Genre(
+            id = it.id!!,
+            name = it.name
+        )
     }
 }

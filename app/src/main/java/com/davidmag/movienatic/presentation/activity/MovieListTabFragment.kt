@@ -8,12 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.davidmag.movienatic.R
-import com.davidmag.movienatic.infrastructure.App
 import com.davidmag.movienatic.presentation.adapter.MovieClickListener
 import com.davidmag.movienatic.presentation.adapter.MovieRecyclerViewAdapter
-import com.davidmag.movienatic.presentation.di.DaggerPresentationComponent
+import com.davidmag.movienatic.presentation.common.BaseFragment
+import com.davidmag.movienatic.presentation.common.PresentationObject
+import com.davidmag.movienatic.presentation.common.initViewModel
 import com.davidmag.movienatic.presentation.viewmodel.MovieListTabViewModel
 import kotlinx.android.synthetic.main.activity_movie_list.*
 import javax.inject.Inject
@@ -23,18 +23,12 @@ open class MovieListTabFragment : BaseFragment(), MovieClickListener {
     @Inject
     lateinit var viewModel : MovieListTabViewModel
 
-    val mAdapter by lazy {
-        MovieRecyclerViewAdapter(context!!, this)
+    private val mAdapter by lazy {
+        MovieRecyclerViewAdapter(this)
     }
 
     override fun onAttach(context: Context) {
-        DaggerPresentationComponent
-            .builder()
-            .applicationComponent(App.applicationComponent)
-            .build()
-            .inject(this)
-
-
+        presentationComponent.inject(this)
         viewModel = initViewModel { viewModel }
 
         super.onAttach(context)
@@ -45,45 +39,40 @@ open class MovieListTabFragment : BaseFragment(), MovieClickListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.activity_movie_list, container, false)
-    }
-
-    override fun onStart() {
-        super.onStart()
-        viewModel.getMovies(arguments!!.getLong("genre_id"))
-        viewModel.getImageConfigs()
+        return inflater.inflate(
+            R.layout.activity_movie_list,
+            container,
+            false
+        )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        recycler_view.layoutManager = GridLayoutManager(context!!, 2) as RecyclerView.LayoutManager?
+        recycler_view.layoutManager = GridLayoutManager(context!!, 2)
         recycler_view.adapter = mAdapter
 
         viewModel.imageConfigs.observe(viewLifecycleOwner, Observer {
-            if(it.isSuccessful()){
-                mAdapter.imageConfigs = it.data
-                mAdapter.notifyDataSetChanged()
-            }
-            else if(it.hasFailed()){
-                it.error?.printStackTrace()
+            when(it.viewType){
+                PresentationObject.DEFAULT_VIEWTYPE_ERROR ->
+                    it.exception?.printStackTrace()
+                PresentationObject.DEFAULT_VIEWTYPE_CONTENT ->
+                    mAdapter.imageConfigs = it.value
             }
         })
 
         viewModel.movies.observe(viewLifecycleOwner, Observer {
-            if(it.isSuccessful()){
-                mAdapter.movieList = it.data!!
-            }
-            else {
-                it.error?.printStackTrace()
-            }
+            mAdapter.movieList = it
         })
     }
 
     override fun onMovieClick(v: View, pos: Int) {
-        val intent = Intent(context, MovieDetailsActivity::class.java)
+        val intent = Intent(
+            context,
+            MovieDetailsActivity::class.java
+        )
 
-        intent.putExtra("id", mAdapter.getItemId(pos).toInt())
+        intent.putExtras(viewModel.fillMovieDetailsArgs(mAdapter.getItem(pos)))
 
         startActivity(intent)
     }

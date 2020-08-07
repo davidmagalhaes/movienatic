@@ -13,6 +13,9 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.view.ActionMode
 import androidx.appcompat.widget.SearchView
+import com.davidmag.movienatic.presentation.common.BaseActivity
+import com.davidmag.movienatic.presentation.common.PresentationObject
+import com.davidmag.movienatic.presentation.common.initViewModel
 import kotlinx.android.synthetic.main.activity_movie_tabhost.*
 
 
@@ -39,40 +42,38 @@ class MovieTabHostActivity : BaseActivity() {
 
         viewModel.updateImageConfigs().observe(this, Observer {})
         viewModel.getGenres().observe(this, Observer {
-            if(it.hasReturnedData()){
+            if(it.isNotEmpty() && it.first().viewType == PresentationObject.DEFAULT_VIEWTYPE_CONTENT){
+                val data = it
 
                 viewModel.updateMovieList(
-                    it.data!![0].id!!,
-                    it.data!![1].id!!,
-                    it.data!![2].id!!,
-                    it.data!![3].id!!
+                    data[0].id,
+                    data[1].id,
+                    data[2].id,
+                    data[3].id
                 ).observe(this, Observer {})
 
                 movieGenrePagerAdapter.mTabs = arrayListOf(
                     TabInfo(
                         title = getString(R.string.presentation_activity_movietabhost_firsttab),
                         fragment = MovieListTabFragment(),
-                        args  = Bundle().apply { putLong("genre_id", it.data!![0].id!!)  }
+                        args  = Bundle().apply { putLong("genre_id", data[0].id)  }
                     ),
                     TabInfo(
                         title = getString(R.string.presentation_activity_movietabhost_secondtab),
                         fragment = MovieListTabFragment(),
-                        args  = Bundle().apply { putLong("genre_id", it.data!![1].id!!)  }
+                        args  = Bundle().apply { putLong("genre_id", data[1].id)  }
                     ),
                     TabInfo(
                         title = getString(R.string.presentation_activity_movietabhost_thirdtab),
                         fragment = MovieListTabFragment(),
-                        args  = Bundle().apply { putLong("genre_id", it.data!![2].id!!)  }
+                        args  = Bundle().apply { putLong("genre_id", data[2].id)  }
                     ),
                     TabInfo(
                         title = getString(R.string.presentation_activity_movietabhost_fourthtab),
                         fragment = MovieListTabFragment(),
-                        args  = Bundle().apply { putLong("genre_id", it.data!![3].id!!)  }
+                        args  = Bundle().apply { putLong("genre_id", data[3].id)  }
                     )
                 )
-            }
-            else {
-                it.error?.printStackTrace()
             }
         })
     }

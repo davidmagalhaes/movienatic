@@ -1,51 +1,40 @@
 package com.davidmag.movienatic.presentation.viewmodel
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.LiveDataReactiveStreams
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
-import com.davidmag.movienatic.domain.model.Genre
-import com.davidmag.movienatic.domain.model.ImageConfigs
-import com.davidmag.movienatic.domain.model.Movie
 import com.davidmag.movienatic.domain.usecase.*
-import com.davidmag.movienatic.presentation.common.ResultWrapper
-import com.davidmag.movienatic.presentation.common.Result
+import com.davidmag.movienatic.presentation.common.PresentationObject
+import com.davidmag.movienatic.presentation.common.PresentationWrapper
+import com.davidmag.movienatic.presentation.dto.GenrePresentation
+import com.davidmag.movienatic.presentation.mapper.GenrePresentationMapper
 import io.reactivex.Maybe
 
 class MovieTabHostViewModel(
-    private val getImageConfigsUseCase: GetImageConfigsUseCase,
-    private val searchMoviesUseCase: SearchMoviesUseCase,
     private val fetchMoviesUseCase: FetchMoviesUseCase,
     private val updateImageConfigsUseCase: UpdateImageConfigsUseCase,
     private val getGenresUseCase: GetGenresUseCase
 ) : ViewModel() {
 
-    val imageConfigs = MediatorLiveData<Result<ImageConfigs>>()
-    val genres = MediatorLiveData<Result<List<Genre>>>()
+    val genres = MediatorLiveData<List<GenrePresentation>>()
+    val status = MediatorLiveData<PresentationObject>()
 
-    fun updateImageConfigs() : LiveData<Result<Any>> {
-        return ResultWrapper.wrap(updateImageConfigsUseCase.execute())
+    fun updateImageConfigs() : LiveData<PresentationObject> {
+        return PresentationWrapper.wrapSubmit(
+            updateImageConfigsUseCase.execute()
+        )
     }
 
-    fun searchMovies(query : String) : LiveData<Result<List<Movie>>> {
-        return ResultWrapper.wrap(searchMoviesUseCase.execute(query))
-    }
-
-    fun getGenres() : LiveData<Result<List<Genre>>> {
-        return ResultWrapper.wrap(
-            getGenresUseCase.execute(),
+    fun getGenres() : LiveData<List<GenrePresentation>> {
+        return PresentationWrapper.wrap(
+            getGenresUseCase.execute().map {
+                GenrePresentationMapper.toDto(it)
+            },
             genres
         )
     }
 
-    fun getImageConfigs() : LiveData<Result<ImageConfigs>> {
-        return ResultWrapper.wrapFirst(
-            getImageConfigsUseCase.execute(),
-            imageConfigs
-        )
-    }
-
-    fun updateMovieList(vararg genreId : Long) : LiveData<*> {
+    fun updateMovieList(vararg genreId : Long) : LiveData<PresentationObject> {
         val result = Maybe.just(Any())
 
         genreId.forEach { eachId ->
@@ -54,6 +43,6 @@ class MovieTabHostViewModel(
             }
         }
 
-        return ResultWrapper.wrap(result)
+        return PresentationWrapper.wrapSubmit(result)
     }
 }

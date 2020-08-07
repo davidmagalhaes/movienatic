@@ -1,31 +1,48 @@
 package com.davidmag.movienatic.presentation.viewmodel
 
-import androidx.lifecycle.LiveData
+import android.os.Bundle
 import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.ViewModel
 import com.davidmag.movienatic.domain.model.ImageConfigs
-import com.davidmag.movienatic.domain.model.Movie
 import com.davidmag.movienatic.domain.usecase.*
-import com.davidmag.movienatic.presentation.common.ResultWrapper
-import com.davidmag.movienatic.presentation.common.Result
+import com.davidmag.movienatic.presentation.common.BaseViewModel
+import com.davidmag.movienatic.presentation.common.GenericPresentationObject
+import com.davidmag.movienatic.presentation.common.PresentationWrapper
+import com.davidmag.movienatic.presentation.dto.MoviePresentation
+import com.davidmag.movienatic.presentation.mapper.MoviePresentationMapper
 
 class MovieListTabViewModel (
     private val getMoviesUseCase: GetMoviesUseCase,
     private val getImageConfigsUseCase: GetImageConfigsUseCase
-) : ViewModel() {
+) : BaseViewModel() {
 
-    val movies = MediatorLiveData<Result<List<Movie>>>()
-    val imageConfigs = MediatorLiveData<Result<ImageConfigs>>()
+    val movies = MediatorLiveData<List<MoviePresentation>>()
+    val imageConfigs = MediatorLiveData<GenericPresentationObject<ImageConfigs>>()
 
-    fun getMovies(genreId : Long) : LiveData<Result<List<Movie>>>  {
-        return ResultWrapper.wrap(
-            getMoviesUseCase.execute(genreId = genreId),
+    override fun init(args: Bundle?) {
+        args?.let {
+            loadMovies(it.getLong("genre_id"))
+            loadImageConfigs()
+        } ?: throw Exception("Argument 'genre_id' not provided!")
+    }
+
+    fun fillMovieDetailsArgs(movie: MoviePresentation): Bundle {
+        return Bundle().apply {
+            putLong("id", movie.id)
+        }
+    }
+
+    fun loadMovies(genreId : Long) {
+        PresentationWrapper.wrap(
+            getMoviesUseCase.execute(genreId = genreId)
+                .map {
+                    MoviePresentationMapper.toDto(it)
+                },
             movies
         )
     }
 
-    fun getImageConfigs() : LiveData<Result<ImageConfigs>> {
-        return ResultWrapper.wrapFirst(
+    fun loadImageConfigs() {
+        PresentationWrapper.wrapGeneric(
             getImageConfigsUseCase.execute(),
             imageConfigs
         )

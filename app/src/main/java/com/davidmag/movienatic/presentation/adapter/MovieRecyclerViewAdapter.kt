@@ -1,6 +1,5 @@
 package com.davidmag.movienatic.presentation.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -8,21 +7,22 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.davidmag.movienatic.GlideApp
 import com.davidmag.movienatic.R
 import com.davidmag.movienatic.domain.model.ImageConfigs
-import com.davidmag.movienatic.domain.model.Movie
-import org.threeten.bp.format.DateTimeFormatter
+import com.davidmag.movienatic.presentation.dto.MoviePresentation
 
 class MovieRecyclerViewAdapter(
-    private val context : Context,
     private val movieClickListener: MovieClickListener
 ) : RecyclerView.Adapter<MovieViewHolder>() {
 
     var imageConfigs : ImageConfigs? = null
-
-    var movieList : List<Movie> = ArrayList()
+    var movieList : List<MoviePresentation> = ArrayList()
         set(value) {
             field = value
             notifyDataSetChanged()
         }
+
+    override fun getItemViewType(position: Int): Int {
+        return movieList[position].viewType
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.activity_movie_list_item, parent, false)
@@ -51,7 +51,7 @@ class MovieRecyclerViewAdapter(
         return movieList.size
     }
 
-    override fun getItemId(position: Int): Long {
-        return movieList[position].id!!.toLong()
+    fun getItem(position: Int): MoviePresentation {
+        return movieList[position]
     }
 }
