@@ -16,10 +16,6 @@ class MovieLocalDataSourceImpl(
 
     override fun cache(movies: List<Movie>): Maybe<*> {
         return Maybe.fromCallable {
-            movieDao.cacheWithGenres(
-                MovieFullJoinLocalMapper.toDto(movies)
-            )
-        }.map {
             movieDao.upsertWithGenres(
                 MovieFullJoinLocalMapper.toDto(movies)
             )

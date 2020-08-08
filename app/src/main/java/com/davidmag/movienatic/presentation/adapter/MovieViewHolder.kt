@@ -8,11 +8,9 @@ import kotlinx.android.synthetic.main.activity_movie_list_item.view.*
 
 class MovieViewHolder(view : View, private val movieClickListener: MovieClickListener) : RecyclerView.ViewHolder(view), View.OnClickListener {
     var coverImg : ImageView? = null
-    var titleTxt : TextView? = null
 
     init {
         coverImg = view.movie_list_item_image
-        titleTxt = view.movie_list_item_title
     }
 
     override fun onClick(p0: View?) {

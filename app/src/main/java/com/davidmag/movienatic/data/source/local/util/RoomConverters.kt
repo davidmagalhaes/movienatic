@@ -10,7 +10,7 @@ import org.threeten.bp.OffsetDateTime
 import org.threeten.bp.format.DateTimeFormatter
 import javax.inject.Inject
 
-object AllTypeConverters {
+object RoomConverters {
     private val localDateFormatter = DateTimeFormatter.ISO_DATE
     private val offsetDateTimeFormatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME
 

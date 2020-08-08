@@ -20,8 +20,18 @@ class MovieListTabViewModel (
 
     override fun init(args: Bundle?) {
         args?.let {
-            loadMovies(it.getLong("genre_id"))
-            loadImageConfigs()
+            PresentationWrapper.wrap(
+                getMoviesUseCase.execute(genreId = it.getLong("genre_id"))
+                    .map { movieList ->
+                        MoviePresentationMapper.toDto(movieList)
+                    },
+                movies
+            )
+
+            PresentationWrapper.wrapGeneric(
+                getImageConfigsUseCase.execute(),
+                imageConfigs
+            )
         } ?: throw Exception("Argument 'genre_id' not provided!")
     }
 
@@ -29,22 +39,5 @@ class MovieListTabViewModel (
         return Bundle().apply {
             putLong("id", movie.id)
         }
-    }
-
-    fun loadMovies(genreId : Long) {
-        PresentationWrapper.wrap(
-            getMoviesUseCase.execute(genreId = genreId)
-                .map {
-                    MoviePresentationMapper.toDto(it)
-                },
-            movies
-        )
-    }
-
-    fun loadImageConfigs() {
-        PresentationWrapper.wrapGeneric(
-            getImageConfigsUseCase.execute(),
-            imageConfigs
-        )
     }
 }

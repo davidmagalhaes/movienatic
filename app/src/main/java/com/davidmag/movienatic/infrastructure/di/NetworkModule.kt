@@ -12,6 +12,7 @@ import com.davidmag.movienatic.data.source.remote.api.MovieApi
 import com.davidmag.movienatic.infrastructure.util.Ipv4RoutingOverIpv6
 import com.facebook.stetho.Stetho
 import com.facebook.stetho.okhttp3.StethoInterceptor
+import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
@@ -62,6 +63,9 @@ class NetworkModule {
             .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
             .build()
     }
+
+    @Provides
+    fun provideGson() : Gson = gson
 
     @Singleton
     @Provides

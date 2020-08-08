@@ -10,7 +10,7 @@ import com.davidmag.movienatic.data.source.local.dto.GenreDb
 import com.davidmag.movienatic.data.source.local.dto.ImageConfigsDb
 import com.davidmag.movienatic.data.source.local.dto.MovieDb
 import com.davidmag.movienatic.data.source.local.dto.MovieGenreDb
-import com.davidmag.movienatic.data.source.local.util.AllTypeConverters
+import com.davidmag.movienatic.data.source.local.util.RoomConverters
 
 @Database(
     entities = [
@@ -22,7 +22,7 @@ import com.davidmag.movienatic.data.source.local.util.AllTypeConverters
     version = 2,
     exportSchema = true
 )
-@TypeConverters(AllTypeConverters::class)
+@TypeConverters(RoomConverters::class)
 abstract class LocalDatabase : RoomDatabase() {
     abstract fun getGenreDao(): GenreDao
     abstract fun getMovieDao(): MovieDao

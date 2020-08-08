@@ -8,8 +8,6 @@ class GetGenresUseCase(
     val genreRepository: GenreRepository
 ) {
     fun execute() : Flowable<List<Genre>> {
-        return genreRepository.fetch().toFlowable().flatMap {
-            genreRepository.get()
-        }
+        return genreRepository.get()
     }
 }

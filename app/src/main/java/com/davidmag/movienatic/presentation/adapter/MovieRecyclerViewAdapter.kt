@@ -42,8 +42,6 @@ class MovieRecyclerViewAdapter(
             }
         }
 
-        holder.titleTxt?.text = movie.title
-
         holder.itemView.setOnClickListener(holder)
     }
 

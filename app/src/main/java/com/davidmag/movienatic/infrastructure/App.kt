@@ -4,6 +4,7 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.davidmag.movienatic.BuildConfig
+import com.davidmag.movienatic.data.source.local.util.RoomConverters
 import com.davidmag.movienatic.infrastructure.di.ApplicationComponent
 import com.davidmag.movienatic.infrastructure.di.DaggerApplicationComponent
 import com.facebook.stetho.Stetho

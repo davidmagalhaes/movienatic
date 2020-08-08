@@ -81,18 +81,26 @@ object PresentationWrapper {
         ) as LiveData<PresentationObject>
     }
 
+    @Suppress("UNCHECKED_CAST")
     fun <T> attachOnce(
         maybe: Maybe<Any>,
         mediator: MediatorLiveData<T>
-    )  {
+    ) : LiveData<PresentationObject>  {
         val source = LiveDataReactiveStreams.fromPublisher(
             maybe.observeOn(AndroidSchedulers.mainThread())
+                .map {
+                    GenericPresentationObject<Any>(
+                        viewType = PresentationObject.DEFAULT_VIEWTYPE_CONTENT
+                    )
+                }
                 .toFlowable()
         )
 
         mediator.addSource(source){
             mediator.removeSource(source)
         }
+
+        return source as LiveData<PresentationObject>
     }
 
     fun <T : PresentationObject> wrap(

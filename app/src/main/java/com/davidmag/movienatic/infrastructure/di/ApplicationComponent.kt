@@ -1,13 +1,10 @@
 package com.davidmag.movienatic.infrastructure.di
 
 import android.app.Application
-import com.davidmag.movienatic.domain.repository.ImageConfigsRepository
-import com.davidmag.movienatic.domain.repository.MovieRepository
 import com.davidmag.movienatic.domain.usecase.*
 import com.davidmag.movienatic.infrastructure.App
 import dagger.BindsInstance
 import dagger.Component
-import dagger.Provides
 import javax.inject.Singleton
 
 @Singleton

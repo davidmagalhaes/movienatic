@@ -21,28 +21,30 @@ class MovieDetailsViewModel (
     val movie = MediatorLiveData<MoviePresentation>()
     val imageConfigs = MediatorLiveData<GenericPresentationObject<ImageConfigs>>()
 
+    private var movieId: Long = -1
+
     override fun init(args: Bundle?)  {
-        args?.get("id")?.let { id ->
-            PresentationWrapper.wrapGeneric(
-                getImageConfigsUseCase.execute().firstElement(),
-                imageConfigs
-            )
+        movieId = (args?.get("id") as Long?) ?: throw Exception("Argument 'id' not provided!")
 
-            loadMovie(id as Long)
+        PresentationWrapper.wrapGeneric(
+            getImageConfigsUseCase.execute().firstElement(),
+            imageConfigs
+        )
 
-            PresentationWrapper.wrapFirst(
-                getMoviesUseCase.execute(id = id)
-                    .map {
-                        MoviePresentationMapper.toDto(it)
-                    },
-                movie
-            )
-        } ?: throw Exception("Argument 'id' not provided!")
+        PresentationWrapper.wrapFirst(
+            getMoviesUseCase.execute(id = movieId)
+                .map {
+                    MoviePresentationMapper.toDto(it)
+                },
+            movie
+        )
+
+        loadMovie()
     }
 
-    fun loadMovie(id: Long) {
+    fun loadMovie() {
         PresentationWrapper.attachOnce(
-            fetchMovieDetailsByIdUseCase.execute(id),
+            fetchMovieDetailsByIdUseCase.execute(movieId),
             movie
         )
     }

@@ -3,7 +3,7 @@ package com.davidmag.movienatic.presentation.di
 import com.davidmag.movienatic.domain.usecase.*
 import com.davidmag.movienatic.presentation.viewmodel.MovieDetailsViewModel
 import com.davidmag.movienatic.presentation.viewmodel.MovieListTabViewModel
-import com.davidmag.movienatic.presentation.viewmodel.MovieTabHostViewModel
+import com.davidmag.movienatic.presentation.viewmodel.HomeViewModel
 import dagger.Module
 import dagger.Provides
 
@@ -11,15 +11,11 @@ import dagger.Provides
 class ViewModelModule {
     @Provides
     fun provideMovieTabHostViewModel(
-        getImageConfigsUseCase: GetImageConfigsUseCase,
-        searchMoviesUseCase: SearchMoviesUseCase,
         fetchMoviesUseCase: FetchMoviesUseCase,
         updateImageConfigsUseCase: UpdateImageConfigsUseCase,
         getGenresUseCase: GetGenresUseCase
-    ) : MovieTabHostViewModel {
-        return MovieTabHostViewModel(
-            getImageConfigsUseCase,
-            searchMoviesUseCase,
+    ) : HomeViewModel {
+        return HomeViewModel(
             fetchMoviesUseCase,
             updateImageConfigsUseCase,
             getGenresUseCase

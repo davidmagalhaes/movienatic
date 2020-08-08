@@ -37,11 +37,20 @@ class MovieDetailsActivity : BaseActivity() {
 
         viewModel.imageConfigs.observe(this, Observer {
             when(it.viewType) {
-                PresentationObject.DEFAULT_VIEWTYPE_CONTENT -> imageConfigs = it.value
                 PresentationObject.DEFAULT_VIEWTYPE_ERROR   -> it.exception?.printStackTrace()
+                PresentationObject.DEFAULT_VIEWTYPE_CONTENT -> {
+                    val oldImageConfigs = imageConfigs
+                    imageConfigs = it.value
+
+                    if(oldImageConfigs == null){
+                        bindMovie()
+                    }
+                }
             }
         })
+    }
 
+    fun bindMovie(){
         viewModel.movie.observe(this, Observer {
             when(it.viewType) {
                 PresentationObject.DEFAULT_VIEWTYPE_ERROR   -> it.exception?.printStackTrace()
