@@ -3,6 +3,7 @@ package com.davidmag.movienatic.presentation.common
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.LiveDataReactiveStreams
 import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.Observer
 import io.reactivex.Flowable
 import io.reactivex.Maybe
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -17,9 +18,11 @@ object PresentationWrapper {
         val mediat = mediator ?: MediatorLiveData()
         val source = LiveDataReactiveStreams.fromPublisher(
             Flowable.fromCallable {
-                mediat.postValue(GenericPresentationObject(
-                    viewType = PresentationObject.DEFAULT_VIEWTYPE_WAITING
-                ))
+                mediat.postValue(
+                    GenericPresentationObject(
+                        PresentationObject.VIEWTYPE_WAITING
+                    )
+                )
             }.flatMap {
                 flowable.observeOn(AndroidSchedulers.mainThread())
                     .map {
@@ -27,21 +30,19 @@ object PresentationWrapper {
                     }
                     .map {
                         if(it != null){
-                            GenericPresentationObject(
-                                viewType = PresentationObject.DEFAULT_VIEWTYPE_CONTENT,
-                                value = it
+                            GenericPresentationObject<T>(
+                                PresentationObject.VIEWTYPE_WAITING
                             )
                         }
                         else {
                             GenericPresentationObject(
-                                viewType = PresentationObject.DEFAULT_VIEWTYPE_EMPTY
+                                PresentationObject.VIEWTYPE_EMPTY
                             )
                         }
                     }
                     .onErrorReturn {
                         GenericPresentationObject(
-                            viewType = PresentationObject.DEFAULT_VIEWTYPE_ERROR,
-                            exception = it
+                            PresentationObject.VIEWTYPE_ERROR
                         )
                     }
             }
@@ -68,20 +69,23 @@ object PresentationWrapper {
         )
     }
 
-    @Suppress("UNCHECKED_CAST")
     fun wrapSubmit(
         maybe: Maybe<Any>,
-        mediator: MediatorLiveData<GenericPresentationObject<Any>>? = null
+        mediator: MediatorLiveData<PresentationObject>? = null
     ) : LiveData<PresentationObject> {
-        return wrapGeneric(
-            maybe.map {
-                listOf(it)
-            },
-            mediator
-        ) as LiveData<PresentationObject>
+        val mediat = mediator ?: MediatorLiveData()
+        val source = wrapGeneric(
+            maybe.map { listOf(it) }
+        )
+
+        mediat.addSource(source){
+            mediat.postValue(it)
+            mediat.removeSource(source)
+        }
+
+        return mediat
     }
 
-    @Suppress("UNCHECKED_CAST")
     fun <T> attachOnce(
         maybe: Maybe<Any>,
         mediator: MediatorLiveData<T>
@@ -90,9 +94,14 @@ object PresentationWrapper {
             maybe.observeOn(AndroidSchedulers.mainThread())
                 .map {
                     GenericPresentationObject<Any>(
-                        viewType = PresentationObject.DEFAULT_VIEWTYPE_CONTENT
-                    )
+                        viewType = PresentationObject.VIEWTYPE_CONTENT
+                    ) as PresentationObject
                 }
+                .onErrorReturnItem(
+                    GenericPresentationObject<Any>(
+                        viewType = PresentationObject.VIEWTYPE_ERROR
+                    )
+                )
                 .toFlowable()
         )
 
@@ -100,7 +109,7 @@ object PresentationWrapper {
             mediator.removeSource(source)
         }
 
-        return source as LiveData<PresentationObject>
+        return source
     }
 
     fun <T : PresentationObject> wrap(

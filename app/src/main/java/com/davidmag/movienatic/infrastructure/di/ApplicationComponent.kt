@@ -35,4 +35,5 @@ interface ApplicationComponent {
     fun updateImageConfigsUseCase(): UpdateImageConfigsUseCase
     fun getImageConfigsUseCase(): GetImageConfigsUseCase
     fun getGenresUseCase(): GetGenresUseCase
+    fun fetchGenresUseCase(): FetchGenresUseCase
 }

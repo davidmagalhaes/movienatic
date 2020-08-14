@@ -5,7 +5,7 @@ import dagger.android.AndroidInjectionModule
 import dagger.android.support.AndroidSupportInjectionModule
 import com.davidmag.movienatic.infrastructure.di.*
 import com.davidmag.movienatic.presentation.activity.MovieDetailsActivity
-import com.davidmag.movienatic.presentation.activity.MovieListTabFragment
+import com.davidmag.movienatic.presentation.activity.MovieListFragment
 import com.davidmag.movienatic.presentation.activity.HomeActivity
 
 @PresentationScope
@@ -15,6 +15,7 @@ import com.davidmag.movienatic.presentation.activity.HomeActivity
     ],
     modules = [
         ViewModelModule::class,
+        ViewTypeDelegateModule::class,
         AndroidInjectionModule::class,
         AndroidSupportInjectionModule::class
     ]
@@ -22,6 +23,6 @@ import com.davidmag.movienatic.presentation.activity.HomeActivity
 interface PresentationComponent {
 
     fun inject(homeActivity: HomeActivity)
-    fun inject(movieListTabFragment: MovieListTabFragment)
+    fun inject(movieListFragment: MovieListFragment)
     fun inject(movieDetailsActivity: MovieDetailsActivity)
 }

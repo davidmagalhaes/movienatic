@@ -37,8 +37,8 @@ class MovieDetailsActivity : BaseActivity() {
 
         viewModel.imageConfigs.observe(this, Observer {
             when(it.viewType) {
-                PresentationObject.DEFAULT_VIEWTYPE_ERROR   -> it.exception?.printStackTrace()
-                PresentationObject.DEFAULT_VIEWTYPE_CONTENT -> {
+                PresentationObject.VIEWTYPE_ERROR   -> it.exception?.printStackTrace()
+                PresentationObject.VIEWTYPE_CONTENT -> {
                     val oldImageConfigs = imageConfigs
                     imageConfigs = it.value
 
@@ -53,8 +53,8 @@ class MovieDetailsActivity : BaseActivity() {
     fun bindMovie(){
         viewModel.movie.observe(this, Observer {
             when(it.viewType) {
-                PresentationObject.DEFAULT_VIEWTYPE_ERROR   -> it.exception?.printStackTrace()
-                PresentationObject.DEFAULT_VIEWTYPE_CONTENT -> {
+                PresentationObject.VIEWTYPE_ERROR   -> it.exception?.printStackTrace()
+                PresentationObject.VIEWTYPE_CONTENT -> {
                     val movie = it!!
 
                     supportActionBar?.title = movie.title

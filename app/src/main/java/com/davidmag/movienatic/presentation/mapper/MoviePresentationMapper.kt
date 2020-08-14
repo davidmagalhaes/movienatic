@@ -12,7 +12,7 @@ object MoviePresentationMapper : PresentationMapper<Movie, MoviePresentation>{
         entities.forEach {
             result.add(
                 MoviePresentation(
-                    viewType = PresentationObject.DEFAULT_VIEWTYPE_CONTENT,
+                    viewType = PresentationObject.VIEWTYPE_CONTENT,
                     title = it.title,
                     posterPath = it.posterPath
                 )

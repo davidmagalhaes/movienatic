@@ -7,7 +7,7 @@ import com.davidmag.movienatic.domain.usecase.FetchMovieDetailsByIdUseCase
 import com.davidmag.movienatic.domain.usecase.GetImageConfigsUseCase
 import com.davidmag.movienatic.domain.usecase.GetMoviesUseCase
 import com.davidmag.movienatic.presentation.common.BaseViewModel
-import com.davidmag.movienatic.presentation.common.GenericPresentationObject
+import com.davidmag.movienatic.presentation.common.ContentPresentationObjectImpl
 import com.davidmag.movienatic.presentation.common.PresentationWrapper
 import com.davidmag.movienatic.presentation.dto.MoviePresentation
 import com.davidmag.movienatic.presentation.mapper.MoviePresentationMapper
@@ -19,7 +19,7 @@ class MovieDetailsViewModel (
 ) : BaseViewModel() {
 
     val movie = MediatorLiveData<MoviePresentation>()
-    val imageConfigs = MediatorLiveData<GenericPresentationObject<ImageConfigs>>()
+    val imageConfigs = MediatorLiveData<ContentPresentationObjectImpl<ImageConfigs>>()
 
     private var movieId: Long = -1
 

@@ -7,21 +7,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.GridLayoutManager
 import com.davidmag.movienatic.R
 import com.davidmag.movienatic.presentation.adapter.MovieClickListener
 import com.davidmag.movienatic.presentation.adapter.MovieRecyclerViewAdapter
 import com.davidmag.movienatic.presentation.common.BaseFragment
 import com.davidmag.movienatic.presentation.common.PresentationObject
 import com.davidmag.movienatic.presentation.common.initViewModel
-import com.davidmag.movienatic.presentation.viewmodel.MovieListTabViewModel
+import com.davidmag.movienatic.presentation.viewmodel.MovieListViewModel
 import kotlinx.android.synthetic.main.activity_movie_list.*
 import javax.inject.Inject
 
-open class MovieListTabFragment : BaseFragment(), MovieClickListener {
+open class MovieListFragment : BaseFragment(), MovieClickListener {
 
     @Inject
-    lateinit var viewModel : MovieListTabViewModel
+    lateinit var viewModel : MovieListViewModel
 
     private val mAdapter by lazy {
         MovieRecyclerViewAdapter(this)
@@ -49,14 +48,13 @@ open class MovieListTabFragment : BaseFragment(), MovieClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        recycler_view.layoutManager = GridLayoutManager(context!!, 2)
         recycler_view.adapter = mAdapter
 
         viewModel.imageConfigs.observe(viewLifecycleOwner, Observer {
             when(it.viewType){
-                PresentationObject.DEFAULT_VIEWTYPE_ERROR ->
+                PresentationObject.VIEWTYPE_ERROR ->
                     it.exception?.printStackTrace()
-                PresentationObject.DEFAULT_VIEWTYPE_CONTENT ->
+                PresentationObject.VIEWTYPE_CONTENT ->
                     mAdapter.imageConfigs = it.value
             }
         })

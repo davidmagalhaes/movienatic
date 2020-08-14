@@ -7,6 +7,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.davidmag.movienatic.GlideApp
 import com.davidmag.movienatic.R
 import com.davidmag.movienatic.domain.model.ImageConfigs
+import com.davidmag.movienatic.presentation.common.PresentationObject
 import com.davidmag.movienatic.presentation.dto.MoviePresentation
 
 class MovieRecyclerViewAdapter(
@@ -25,7 +26,18 @@ class MovieRecyclerViewAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.activity_movie_list_item, parent, false)
+        val view = LayoutInflater.from(parent.context)
+            .inflate(
+                when(viewType) {
+                    PresentationObject.VIEWTYPE_WAITING ->
+                        R.layout.activity_home_movie_list_waiting
+                    else ->
+                        R.layout.activity_home_movie_list_item
+                },
+                parent,
+                false
+            )
+
         return MovieViewHolder(view, movieClickListener)
     }
 

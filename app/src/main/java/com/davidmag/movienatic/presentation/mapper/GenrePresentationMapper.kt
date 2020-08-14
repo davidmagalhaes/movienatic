@@ -12,7 +12,7 @@ object GenrePresentationMapper : PresentationMapper<Genre, GenrePresentation> {
         entities.forEach {
             result.add(
                 GenrePresentation(
-                    viewType = PresentationObject.DEFAULT_VIEWTYPE_CONTENT,
+                    viewType = PresentationObject.VIEWTYPE_CONTENT,
                     id = it.id,
                     description = it.name
                 )

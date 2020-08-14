@@ -9,8 +9,6 @@ class FetchMoviesUseCase (
     val movieRepository: MovieRepository
 ) {
     fun execute(genreId : Long? = null) : Maybe<Any> {
-        return genreRepository.fetch().flatMap {
-            movieRepository.fetch(genreId)
-        }
+        return movieRepository.fetch(genreId)
     }
 }

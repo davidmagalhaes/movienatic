@@ -66,4 +66,12 @@ class UseCaseModule {
     ) : GetGenresUseCase {
         return GetGenresUseCase(genreRepository)
     }
+
+    @Singleton
+    @Provides
+    fun provideFetchGenresUseCase(
+        genreRepository: GenreRepository
+    ) = FetchGenresUseCase(
+        genreRepository
+    )
 }

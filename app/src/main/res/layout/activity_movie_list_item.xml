@@ -11,7 +11,7 @@
             android:layout_height="match_parent"
             tools:srcCompat="@tools:sample/avatars"
             android:adjustViewBounds="true"
-            android:scaleType="centerCrop"
+            android:scaleType="fitXY"
             android:id="@+id/movie_list_item_image"/>
 
 </androidx.cardview.widget.CardView>

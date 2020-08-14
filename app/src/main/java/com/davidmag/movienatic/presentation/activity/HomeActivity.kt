@@ -9,15 +9,24 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.view.ActionMode
 import androidx.appcompat.widget.SearchView
+import com.davidmag.movienatic.presentation.adapter.HomeRecyclerAdapter
 import com.davidmag.movienatic.presentation.common.BaseActivity
 import com.davidmag.movienatic.presentation.common.PresentationObject
 import com.davidmag.movienatic.presentation.common.initViewModel
+import com.davidmag.movienatic.presentation.dto.GenrePresentation
 import kotlinx.android.synthetic.main.activity_home.*
 
 class HomeActivity : BaseActivity() {
 
     @Inject
     lateinit var viewModel : HomeViewModel
+
+    val adapter by lazy {
+        HomeRecyclerAdapter(
+            context = this,
+            supportFragmentManager = supportFragmentManager
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +41,10 @@ class HomeActivity : BaseActivity() {
             viewModel.updateGenres()
         }
 
+        swiper.isRefreshing = true
+
+        home_recycler.adapter = adapter
+
         viewModel = initViewModel { viewModel }
 
         viewModel.updateImageConfigs()
@@ -40,16 +53,9 @@ class HomeActivity : BaseActivity() {
         viewModel.genres.observe(this, Observer {
             swiper.isRefreshing = false
 
-            it.forEach { element ->
-                if(element.viewType == PresentationObject.DEFAULT_VIEWTYPE_CONTENT){
-                    viewModel.updateMovieList(element.id).observe(this, Observer {
-
-                    })
-                }
-                else if(element.viewType == PresentationObject.DEFAULT_VIEWTYPE_ERROR){
-                    element.exception?.printStackTrace()
-                }
-            }
+            adapter.elementList.clear()
+            adapter.elementList.addAll(it)
+            adapter.notifyDataSetChanged()
         })
     }
 

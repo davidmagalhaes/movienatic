@@ -23,11 +23,12 @@ class MovieRemoteDatasourceImpl(
     }
 
     override fun fetch(genreId : Long?) : Maybe<List<Movie>> {
-        return movieApi.lookup(BuildConfig.API_KEY,
-                if(genreId != null) "$genreId" else "28, 18, 14, 878")
-            .map {
-                MovieRemoteMapper.toEntity(it.results)
-            }
+        return movieApi.lookup(
+            BuildConfig.API_KEY,
+            "$genreId"
+        ).map {
+            MovieRemoteMapper.toEntity(it.results)
+        }
     }
 
     override fun find(id : Long) : Maybe<Movie?> {
