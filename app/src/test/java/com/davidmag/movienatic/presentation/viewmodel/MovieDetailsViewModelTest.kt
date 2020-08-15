@@ -21,24 +21,6 @@ class MovieDetailsViewModelTest {
 
     @Test
     fun testFindMovie(){
-        val liveData = MutableLiveData<Resource<Movie>>()
-        val resource = Resource.loading(null)
 
-        mockkObject(MovieRepositoryImpl){
-            val viewModel = MovieDetailsViewModel()
-
-            liveData.value = resource
-
-            every { MovieRepositoryImpl.findMovie(any()) } answers { liveData }
-
-            viewModel.findMovie(1)
-
-            assert(viewModel.movie.hasObservers())
-            assert(viewModel.movie.value == resource)
-
-            verify {
-                MovieRepositoryImpl.findMovie(1)
-            }
-        }
     }
 }
