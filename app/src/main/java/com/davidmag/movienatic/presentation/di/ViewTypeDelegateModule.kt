@@ -7,10 +7,5 @@ import dagger.multibindings.IntoMap
 
 @Module
 class ViewTypeDelegateModule {
-    @Provides
-    @IntoMap
-    @IntKey(10)
-    fun providesConnectionErrorViewType() {
 
-    }
 }

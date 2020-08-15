@@ -4,10 +4,7 @@ import android.os.Bundle
 import androidx.lifecycle.MediatorLiveData
 import com.davidmag.movienatic.domain.model.ImageConfigs
 import com.davidmag.movienatic.domain.usecase.*
-import com.davidmag.movienatic.presentation.common.BaseViewModel
-import com.davidmag.movienatic.presentation.common.ContentPresentationObjectImpl
-import com.davidmag.movienatic.presentation.common.PresentationObject
-import com.davidmag.movienatic.presentation.common.PresentationWrapper
+import com.davidmag.movienatic.presentation.common.*
 import com.davidmag.movienatic.presentation.dto.MoviePresentation
 import com.davidmag.movienatic.presentation.mapper.MoviePresentationMapper
 
@@ -18,7 +15,7 @@ class MovieListViewModel (
 ) : BaseViewModel() {
 
     val movies = MediatorLiveData<List<MoviePresentation>>()
-    val imageConfigs = MediatorLiveData<ContentPresentationObjectImpl<ImageConfigs>>()
+    val imageConfigs = MediatorLiveData<GenericPresentationObject<ImageConfigs>>()
 
     private var genreId: Long = -1
 

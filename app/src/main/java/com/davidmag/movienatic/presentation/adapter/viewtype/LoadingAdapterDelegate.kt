@@ -1,13 +1,13 @@
 package com.davidmag.movienatic.presentation.adapter.viewtype
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.davidmag.movienatic.R
 import com.davidmag.movienatic.presentation.adapter.LoadingViewHolder
-import com.davidmag.movienatic.presentation.common.ViewTypeDelegate
+import com.davidmag.movienatic.presentation.common.PresentationObject
+import com.davidmag.movienatic.presentation.common.AdapterDelegate
 
-class LoadingViewTypeDelegate : ViewTypeDelegate<LoadingViewHolder> {
+class LoadingAdapterDelegate : AdapterDelegate<PresentationObject, LoadingViewHolder> {
     override fun onCreateViewHolder(inflater: LayoutInflater, parent: ViewGroup, viewType: Int): LoadingViewHolder {
         return LoadingViewHolder(
             inflater.inflate(
@@ -16,6 +16,18 @@ class LoadingViewTypeDelegate : ViewTypeDelegate<LoadingViewHolder> {
                 false
             )
         )
+    }
+
+    override fun getViewType(): Int {
+        TODO("Not yet implemented")
+    }
+
+    override fun onBindViewHolder(
+        items: List<PresentationObject>,
+        holder: LoadingViewHolder,
+        position: Int
+    ) {
+        TODO("Not yet implemented")
     }
 
 
