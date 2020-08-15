@@ -19,7 +19,7 @@ class LoadingAdapterDelegate : AdapterDelegate<PresentationObject, LoadingViewHo
     }
 
     override fun getViewType(): Int {
-        TODO("Not yet implemented")
+        return PresentationObject.VIEWTYPE_WAITING
     }
 
     override fun onBindViewHolder(

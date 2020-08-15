@@ -10,8 +10,6 @@ public class AdapterDelegatesManager {
     private val adapterDelegateArray =
         SparseArray<AdapterDelegate<PresentationObject, RecyclerView.ViewHolder>>()
 
-    init{}
-
     constructor(
         adapterDelegateList : List<AdapterDelegate<in PresentationObject, in RecyclerView.ViewHolder>>
     ) {
