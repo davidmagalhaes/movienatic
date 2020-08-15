@@ -31,9 +31,6 @@
                     android:resource="@xml/searchable"/>
 
         </activity>
-
-        <activity android:name="com.facebook.flipper.android.diagnostics.FlipperDiagnosticActivity"
-                android:exported="true"/>
     </application>
 
 </manifest>
