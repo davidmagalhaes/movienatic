@@ -1,4 +1,4 @@
-package com.davidmag.movienatic.presentation.activity
+package com.davidmag.movienatic.presentation.fragmentactivity.home
 
 import android.os.Bundle
 import androidx.lifecycle.Observer
@@ -7,25 +7,23 @@ import com.davidmag.movienatic.presentation.viewmodel.HomeViewModel
 import javax.inject.Inject
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.appcompat.widget.SearchView
-import com.davidmag.movienatic.presentation.adapter.HomeRecyclerAdapter
-import com.davidmag.movienatic.presentation.common.BaseActivity
-import com.davidmag.movienatic.presentation.common.PresentationObject
+import com.davidmag.movienatic.presentation.common.DelegatedAdapter
 import com.davidmag.movienatic.presentation.common.initViewModel
-import com.davidmag.movienatic.presentation.dto.GenrePresentation
+import com.davidmag.movienatic.presentation.di.presentationComponent
 import kotlinx.android.synthetic.main.activity_home.*
 
-class HomeActivity : BaseActivity() {
+class HomeActivity : AppCompatActivity() {
 
     @Inject
     lateinit var viewModel : HomeViewModel
 
     val adapter by lazy {
-        HomeRecyclerAdapter(
-            context = this,
-            supportFragmentManager = supportFragmentManager
-        )
+        DelegatedAdapter(this).apply {
+            presentationComponent.inject(this)
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,8 +51,7 @@ class HomeActivity : BaseActivity() {
         viewModel.genres.observe(this, Observer {
             swiper.isRefreshing = false
 
-            adapter.elementList.clear()
-            adapter.elementList.addAll(it)
+            adapter.items = it
             adapter.notifyDataSetChanged()
         })
     }

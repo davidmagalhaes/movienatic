@@ -1,4 +1,4 @@
-package com.davidmag.movienatic.presentation.adapter
+package com.davidmag.movienatic.presentation.adapter.movie
 
 import android.view.View
 

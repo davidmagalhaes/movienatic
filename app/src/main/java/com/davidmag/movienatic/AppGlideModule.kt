@@ -8,12 +8,19 @@ import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.integration.okhttp3.OkHttpUrlLoader
 import com.bumptech.glide.Glide
 import com.bumptech.glide.Registry
+import com.davidmag.movienatic.presentation.di.presentationComponent
+import okhttp3.OkHttpClient
 import java.io.InputStream
+import javax.inject.Inject
 
 @GlideModule
 class AppGlideModule : AppGlideModule(){
-    companion object {
-        lateinit var factory : OkHttpUrlLoader.Factory
+
+    @Inject
+    lateinit var factory : OkHttpUrlLoader.Factory
+
+    init {
+        presentationComponent.inject(this)
     }
 
     override fun registerComponents(context: Context, glide: Glide, registry: Registry) {

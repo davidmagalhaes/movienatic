@@ -20,19 +20,13 @@ class App : Application() {
             private set
 
         lateinit var applicationComponent: ApplicationComponent
-
-        val currentLocale = MutableLiveData<Locale>()
     }
+
     init {
         instance = this
     }
 
     override fun onCreate() {
-        currentLocale.value = Locale.getDefault()
-        currentLocale.observeForever {
-            Locale.setDefault(it)
-        }
-
         if(BuildConfig.DEBUG) {
             Stetho.initialize(
                 Stetho.newInitializerBuilder(this)

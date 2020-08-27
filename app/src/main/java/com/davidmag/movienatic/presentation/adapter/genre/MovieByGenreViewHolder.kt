@@ -1,16 +1,17 @@
-package com.davidmag.movienatic.presentation.adapter
+package com.davidmag.movienatic.presentation.adapter.genre
 
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import com.davidmag.movienatic.presentation.activity.MovieListFragment
+import com.davidmag.movienatic.presentation.fragmentactivity.MovieListFragment
+import com.davidmag.movienatic.presentation.adapter.HomeViewHolder
 import com.davidmag.movienatic.presentation.common.PresentationObject
 import com.davidmag.movienatic.presentation.dto.GenrePresentation
 import kotlinx.android.synthetic.main.activity_home_genre_item.view.*
 import java.lang.IllegalArgumentException
 
-class HomeGenreViewHolder(itemView: View) : HomeViewHolder(itemView) {
+class MovieByGenreViewHolder(itemView: View) : HomeViewHolder(itemView) {
 
     private val title = itemView.genre_title
 
@@ -30,7 +31,7 @@ class HomeGenreViewHolder(itemView: View) : HomeViewHolder(itemView) {
             .commit()
     }
 
-    fun findOrCreateFragment(supportFragmentManager: FragmentManager, genrePresentation: GenrePresentation) : Fragment {
+    private fun findOrCreateFragment(supportFragmentManager: FragmentManager, genrePresentation: GenrePresentation) : Fragment {
         return supportFragmentManager.findFragmentByTag(
             "movieList${genrePresentation.id}"
         ) ?: MovieListFragment().apply {

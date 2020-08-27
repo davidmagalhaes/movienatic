@@ -7,4 +7,8 @@ data class GenrePresentation(
     val id: Long = -1,
     val description: String? = null,
     override val exception: Throwable? = null
-): PresentationObject
+): PresentationObject {
+    companion object {
+
+    }
+}

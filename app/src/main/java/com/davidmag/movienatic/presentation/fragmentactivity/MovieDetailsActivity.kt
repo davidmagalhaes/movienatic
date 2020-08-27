@@ -1,21 +1,21 @@
-package com.davidmag.movienatic.presentation.activity
+package com.davidmag.movienatic.presentation.fragmentactivity
 
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.davidmag.movienatic.GlideApp
 import com.davidmag.movienatic.R
 import com.davidmag.movienatic.domain.model.ImageConfigs
-import com.davidmag.movienatic.presentation.common.BaseActivity
 import com.davidmag.movienatic.presentation.common.PresentationObject
 import com.davidmag.movienatic.presentation.common.initViewModel
+import com.davidmag.movienatic.presentation.di.presentationComponent
 import com.davidmag.movienatic.presentation.viewmodel.MovieDetailsViewModel
 import kotlinx.android.synthetic.main.activity_movie_details.*
-import kotlinx.android.synthetic.main.activity_movie_details.toolbar
 import javax.inject.Inject
 
-class MovieDetailsActivity : BaseActivity() {
+class MovieDetailsActivity : AppCompatActivity() {
 
     @Inject
     lateinit var viewModel : MovieDetailsViewModel

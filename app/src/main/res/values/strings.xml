@@ -12,4 +12,5 @@
     <string name="presentation_activity_movietabhost_menu_search">Pessquisar</string>
     <string name="search_hint">Pesquisar por filmes</string>
     <string name="connection_error">Erro de conexão!</string>
+    <string name="empty">A lista esta vazia!</string>
 </resources>

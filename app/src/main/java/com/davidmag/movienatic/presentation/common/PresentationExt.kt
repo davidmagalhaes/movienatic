@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
+import kotlin.reflect.KClass
 
 inline fun <reified T: ViewModel> AppCompatActivity.initViewModel(crossinline factory: () -> T): T =
     _initViewModel(this, intent.extras, factory)
@@ -28,4 +29,6 @@ inline fun <reified T: ViewModel> _initViewModel(owner: ViewModelStoreOwner, arg
         }
     }).get(clazz)
 }
+
+
 

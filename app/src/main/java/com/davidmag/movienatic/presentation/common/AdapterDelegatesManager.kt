@@ -3,35 +3,95 @@ package com.davidmag.movienatic.presentation.common
 import android.util.SparseArray
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 
-public class AdapterDelegatesManager {
+class AdapterDelegatesManager(
+    adapterDelegateMap : Map<Class<out Any>, GroupedAdapterDelegates>
+) {
+    companion object {
+        const val SHIFT_VALUE = 100
+    }
 
-    private val adapterDelegateArray =
-        SparseArray<AdapterDelegate<PresentationObject, RecyclerView.ViewHolder>>()
+    private val adapterDelegates =
+        SparseArray<AdapterDelegate<RecyclerView.ViewHolder>>()
 
-    constructor(
-        adapterDelegateList : List<AdapterDelegate<in PresentationObject, in RecyclerView.ViewHolder>>
-    ) {
-        adapterDelegateList.forEach {
-            addDelegate(it)
+    private val classIdMap = HashMap<Int, Class<*>>()
+    private val reversedClassIdMap = HashMap<Class<*>, Int>()
+    private var classId = 1
+
+    init {
+        adapterDelegateMap.forEach { entry ->
+            entry.value.forEach {
+                @Suppress("UNCHECKED_CAST")
+                addDelegate(entry.key, it as AdapterDelegate<RecyclerView.ViewHolder>)
+            }
         }
     }
 
     fun addDelegate(
-        adapterDelegate: AdapterDelegate<in PresentationObject, in RecyclerView.ViewHolder>
+        clazz: Class<*>,
+        adapterDelegate: AdapterDelegate<RecyclerView.ViewHolder>
     ) {
-        adapterDelegateArray.put(
-            adapterDelegate.getViewType(),
-            adapterDelegate
+        val shiftedClassId =  reversedClassIdMap[clazz] ?: run {
+            val generatedId = classId * SHIFT_VALUE
+
+            classIdMap[generatedId] = clazz
+            reversedClassIdMap[clazz] = generatedId
+
+            classId++
+            generatedId
+        }
+
+        adapterDelegate.supportedViewTypes.forEach {
+            adapterDelegates.put(shiftedClassId + it, adapterDelegate)
+        }
+    }
+
+    fun onCreateViewHolder(
+        inflater: LayoutInflater,
+        parent : ViewGroup,
+        compositeViewType : Int,
+        extras : Map<String, Any?>
+    ) : RecyclerView.ViewHolder{
+        val adapterDelegate = adapterDelegates[compositeViewType] ?:
+            reversedClassIdMap[PresentationObject::class.java]?.let {
+                //Falls back to PresentationObject AdapterDelegates
+                adapterDelegates[it + (compositeViewType % SHIFT_VALUE)]
+            }
+
+        return adapterDelegate?.onCreateViewHolder(
+            inflater,
+            parent,
+            compositeViewType % SHIFT_VALUE,
+            extras
+        ) ?: error("AdapterDelegate not found for creating viewholder with composite viewtype $compositeViewType")
+    }
+
+    fun onBindViewHolder(
+        supportFragmentManager: FragmentManager,
+        items: List<PresentationObject>,
+        position : Int,
+        viewHolder : RecyclerView.ViewHolder,
+        extras : Map<String, Any?>
+    ) {
+        return adapterDelegates[viewHolder.itemViewType]?.onBindViewHolder(
+            supportFragmentManager,
+            items,
+            viewHolder,
+            position,
+            extras
+        ) ?: run {
+            val item = items[position]
+            error("AdapterDelegate not found for class ${item::class.qualifiedName} with viewType ${item.viewType}")
+        }
+    }
+
+    fun getItemCompositeViewType(item : PresentationObject) : Int {
+        return item.viewType + (
+            reversedClassIdMap[item::class.java] ?:
+            reversedClassIdMap[PresentationObject::class.java] ?:
+            error("Class ${item::class.java.name} is not mapped on this AdapterDelegatesManager")
         )
-    }
-
-    fun onCreateViewHolder(inflater: LayoutInflater, parent : ViewGroup, viewType : Int) : RecyclerView.ViewHolder{
-        return adapterDelegateArray[viewType].onCreateViewHolder(inflater, parent, viewType)
-    }
-
-    fun onBindViewHolder(items: List<PresentationObject>, position : Int, viewHolder : RecyclerView.ViewHolder) {
-        return adapterDelegateArray[items[position].viewType].onBindViewHolder(items, viewHolder, position)
     }
 }

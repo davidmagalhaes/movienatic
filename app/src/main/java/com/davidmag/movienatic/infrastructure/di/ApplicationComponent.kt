@@ -1,10 +1,12 @@
 package com.davidmag.movienatic.infrastructure.di
 
 import android.app.Application
+import com.bumptech.glide.integration.okhttp3.OkHttpUrlLoader
 import com.davidmag.movienatic.domain.usecase.*
 import com.davidmag.movienatic.infrastructure.App
 import dagger.BindsInstance
 import dagger.Component
+import okhttp3.OkHttpClient
 import javax.inject.Singleton
 
 @Singleton
@@ -27,6 +29,8 @@ interface ApplicationComponent {
     }
 
     fun inject(application : App)
+
+    fun okHttpUrlLoaderFactory() : OkHttpUrlLoader.Factory
 
     fun fetchMoviesUseCase(): FetchMoviesUseCase
     fun fetchMovieDetailsByIdUseCase(): FetchMovieDetailsByIdUseCase

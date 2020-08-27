@@ -15,15 +15,15 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name="com.davidmag.movienatic.presentation.activity.HomeActivity">
+        <activity android:name="com.davidmag.movienatic.presentation.fragmentactivity.home.HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name="com.davidmag.movienatic.presentation.activity.MovieDetailsActivity" />
-        <activity android:name=".presentation.activity.MovieSearchActivity" >
+        <activity android:name="com.davidmag.movienatic.presentation.fragmentactivity.MovieDetailsActivity" />
+        <activity android:name=".presentation.fragmentactivity.MovieSearchActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>

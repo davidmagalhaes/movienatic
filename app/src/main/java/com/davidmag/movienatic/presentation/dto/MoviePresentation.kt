@@ -10,4 +10,8 @@ data class MoviePresentation(
     val backdropPath: String? = null,
     val overview: String? = null,
     override val exception: Throwable? = null
-) : PresentationObject
+) : PresentationObject {
+    companion object {
+        const val VIEWTYPE_ERROR_CONNECTION = 1
+    }
+}

@@ -1,38 +1,47 @@
 package com.davidmag.movienatic.presentation.common
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import javax.inject.Inject
 
-abstract class ListAdapter (
-    context : Context,
-    private val items : List<PresentationObject>
+open class DelegatedAdapter (
+    context : FragmentActivity,
+    var items : List<PresentationObject> = ArrayList(),
+    var extras : HashMap<String, Any?> = HashMap()
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
 
     @Inject
     lateinit var adapterDelegatesManager: AdapterDelegatesManager
 
     private val layoutInflater = LayoutInflater.from(context)
+    private val supportFragmentManager = context.supportFragmentManager
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return adapterDelegatesManager.onCreateViewHolder(
             layoutInflater,
             parent,
-            viewType
+            viewType,
+            extras
         )
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         adapterDelegatesManager.onBindViewHolder(
+            supportFragmentManager,
             items,
             position,
-            holder
+            holder,
+            extras
         )
     }
 
     override fun getItemCount(): Int {
         return items.size
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return adapterDelegatesManager.getItemCompositeViewType(items[position])
     }
 }
